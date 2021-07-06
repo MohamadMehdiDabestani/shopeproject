@@ -1,0 +1,173 @@
+@model Tuple<List<GetAllProductViewModel> , int>
+@using Core.Services;
+@inject IAdminServices admin
+@section Header {
+    <title>[Shope name] | product list</title>
+    <meta name="description" content="شما میتوانید تمامی محصولات [نام فروشگاه] را زیر ذره بین قرار دهید و با استفاده از فیلتر ها محصول خود را پیدا کنید">
+}
+@{
+    var groups = await admin.GetAllGroup();
+}
+@section Nav {
+    <partial name="_NavbarShadow" />
+}
+
+<div class="u-s-p-y-90">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+                            <div class="shop-w-master">
+                                <h1 class="shop-w-master__heading u-s-m-b-30"><i class="fas fa-filter u-s-m-r-8"></i>
+
+                                    <span>فیلتر</span></h1>
+                                <div class="shop-w-master__sidebar sidebar--bg-snow">
+                                    <div class="u-s-m-b-30">
+                                        <div class="shop-w">
+                                            <div class="shop-w__intro-wrap">
+                                                <h1 class="shop-w__h">دسته بندی ها</h1>
+
+                                                <span class="fas fa-minus shop-w__toggle" data-target="#s-category" data-toggle="collapse"></span>
+                                            </div>
+                                            <div class="shop-w__wrap collapse show" id="s-category">
+                                                <ul class="shop-w__category-list gl-scroll">
+                                                   
+
+                                                @foreach (var item in groups.Where(g=> g.ParentId == null))
+                                                {
+                                                    <li class="has-list">
+                                                        <a href="/product?groupId=@item.GroupId&minPrice=@ViewBag.minPrice&maxPrice=@ViewBag.maxPrice">@item.GroupTitle</a>
+                                                        @if(groups.Any(g=> g.ParentId == item.GroupId)){
+                                                            <span class="category-list__text u-s-m-r-6">(@(@item.SubId.Count()))</span>
+                                                            <span class="js-shop-category-span fas fa-plus u-s-m-r-6"></span>
+                                                            <ul style="display: block">
+                                                                  @foreach (var sub in groups.Where(g=> g.ParentId == item.GroupId))
+                                                                  {
+                                                                      <li>
+                                                                        <a href="/product?groupId=@sub.GroupId&minPrice=@ViewBag.minPrice&maxPrice=@ViewBag.maxPrice">@sub.GroupTitle</a>
+                                                                    </li>
+                                                                  }
+                                                            </ul>
+                                                        }else{
+                                                            <span class="category-list__text u-s-m-r-6">0</span>
+                                                        }
+                                                    </li>
+                                                }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="u-s-m-b-30">
+                                        <div class="shop-w">
+                                            <div class="shop-w__intro-wrap">
+                                                <h1 class="shop-w__h">قیمت</h1>
+
+                                                <span class="fas fa-minus shop-w__toggle" data-target="#s-price" data-toggle="collapse"></span>
+                                            </div>
+                                            <div class="shop-w__wrap collapse show" id="s-price">
+                                                <form class="shop-w__form-p" method="GET" action="/product">
+                                                <input type="hidden" value="@ViewBag.groupId" name="groupId" />
+                                                    <div class="shop-w__form-p-wrap">
+                                                          <div>
+                                                            <button class="btn btn--icon fas fa-angle-right btn--e-transparent-platinum-b-2" type="submit"></button>
+                                                            </div>
+                                                        <div>
+
+                                                            <label for="price-min"></label>
+
+                                                            <input value="@ViewBag.minPrice" class="input-text input-text--primary-style" type="text" id="price-min" placeholder="کف" name="minPrice"></div>
+                                                        <div>
+
+                                                            <label for="price-max"></label>
+
+                                                            <input value="@ViewBag.maxPrice" class="input-text input-text--primary-style" type="text" id="price-max" placeholder="سقف" name="maxPrice"></div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                          <div class="col-lg-9 col-md-12">
+                            <div class="shop-p">
+                                <div class="shop-p__toolbar u-s-m-b-30">
+                                    <div class="shop-p__tool-style">
+                                        <div class="tool-style__group u-s-m-b-8">
+
+                                            <span class="js-shop-grid-target is-active">Grid</span>
+
+                                            <span class="js-shop-list-target">List</span></div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="shop-p__collection">
+                                    <div class="row is-grid-active">
+                                        @foreach (var item in Model.Item1)
+                                        {
+                                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                            <div class="product-m">
+                                                <div class="product-m__thumb">
+
+                                                    <a class="aspect aspect--bg-grey aspect--square u-d-block" href="/product/@item.Id">
+
+                                                        <img class="aspect__img" src="@item.ImageName" alt="@item.AltImage"></a>
+                                                    <div class="product-m__add-cart">
+
+                                                        <a class="btn--e-brand">اضافه کردن به سبد</a></div>
+                                                </div>
+                                                <div class="product-m__content">
+                                                    <div class="product-m__category">
+
+                                                        <a href="shop-side-version-2.html">@item.GroupTitle</a></div>
+                                                    <div class="product-m__name">
+
+                                                        <a href="/product/@item.Id">@item.Name</a></div>
+                                    
+                                                    <div class="product-m__price">@item.Price ت</div>
+                                                    <div class="product-m__hover">
+                                                        <div class="product-m__preview-description">
+
+                                                            <span>@item.Text</span></div>
+                                                        <div class="product-m__wishlist">
+
+                                                            <a class="far fa-heart" href="#" data-tooltip="tooltip" data-placement="top" title="" data-original-title="اضافه کردن به لیست علاقه مندیها"></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+                                        
+                                    </div>
+                                </div>
+                                <div class="u-s-p-y-60">
+                                    <!--====== Pagination ======-->
+                                    <ul class="shop-p__pagination">
+                                    @if (ViewBag.pageId > 1)
+                                    {
+                                        <li>
+                                            <a class="fas fa-angle-right" href="/product?pageId=@(ViewBag.pageId-1)&groupId=@ViewBag.groupId&minPrice=@ViewBag.minPrice&maxPrice=@ViewBag.maxPrice"></a>
+                                        </li>
+                                        <li>
+                                            <a href="/product?pageId=@(ViewBag.pageId-1)&groupId=@ViewBag.groupId&minPrice=@ViewBag.minPrice&maxPrice=@ViewBag.maxPrice">@(ViewBag.pageId-1)</a>
+                                        </li>
+                                    }
+                                    <li class="is-active"><a class="page-link" href="#">@ViewBag.pageId</a></li>
+                                    @if (Model.Item2 > ViewBag.pageId)
+                                    {
+                                        <li>
+                                            <a href="/product?pageId=@(ViewBag.pageId+1)&groupId=@ViewBag.groupId&minPrice=@ViewBag.minPrice&maxPrice=@ViewBag.maxPrice">@(ViewBag.pageId+1)</a>
+                                        </li>
+                                        <li>
+                                            <a class="fas fa-angle-left" href="/product?pageId=@(ViewBag.pageId+1)&groupId=@ViewBag.groupId&minPrice=@ViewBag.minPrice&maxPrice=@ViewBag.maxPrice"></a>
+                                        </li>
+                                    }
+                                    </ul>
+                                    <!--====== End - Pagination ======-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -1,0 +1,73 @@
+@model AddPostViewModel
+@{
+  ViewData["Title"] = "AddPost";
+}
+<h1 class="h3 mb-0 text-gray-800 mt-5 mb-3">Add new post</h1>
+  @if(ViewBag.Error != null) {
+    <div class="alert alert-danger" role="alert">
+      @ViewBag.Error
+    </div>
+  }
+<form class="needs-validation" method="POST" enctype="multipart/form-data" action="/Admin/AddPost" novalidate>
+  <div class="form-row">
+    <div class="col-md-12 mb-3">
+      <label for="PostTitle">Post Title</label>
+      <input type="text" class="form-control" asp-for="PostTitle" id="PostTitle" required>
+      <span class="invalid-feedback" ></span>
+      <small class="form-text text-danger" asp-validation-for="PostTitle"></small>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="Des">Post Description</label>
+      <textarea type="text" class="form-control" asp-for="PostDescription" id="Des" asp-for="PostDescription"
+        required></textarea>
+
+      <span class="invalid-feedback" ></span>
+      <small class="form-text text-danger" asp-validation-for="PostDescription"></small>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="BrowserTitle">Browser Title</label>
+      <input type="text" class="form-control" asp-for="BrowserTitle" id="BrowserTitle" required>
+
+      <span class="invalid-feedback"></span>
+      <small class="form-text text-danger" asp-validation-for="BrowserTitle"></small>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="BrowserDes">Browser Description</label>
+      <textarea type="text" class="form-control"  id="BrowserDes"
+        asp-for="BrowserDescription" required></textarea>
+
+      <span class="invalid-feedback"></span>
+      <small class="form-text text-danger"  asp-validation-for="BrowserDescription"></small>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="Text">Text</label>
+      <textarea type="text" class="form-control" asp-for="Text" id="Text"
+        required></textarea>
+      <span class="invalid-feedback" ></span>
+      <small class="form-text text-danger"  asp-validation-for="Text"></small>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="Image">Image</label>
+      <input type="file" asp-for="Image" required id="Image" />
+      <span class="invalid-feedback"></span>
+      <small class="form-text text-danger" asp-validation-for="Image"></small>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="AltImage">Alt image</label>
+      <input type="text" class="form-control" asp-for="AltImage" required id="AltImage" />
+      <span class="invalid-feedback"></span>
+      <small class="form-text text-danger"  asp-validation-for="AltImage"></small>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="Tags">Tags</label>
+      <input type="text" class="form-control" asp-for="Tags" required id="Tags" />
+      <span class="invalid-feedback"></span>
+      <small class="form-text text-danger" asp-validation-for="Tags"></small>
+      <small id="passwordHelpBlock" class="form-text text-muted">
+        Separate keywords with -
+      </small>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" type="submit">Submit form</button>
+</form>

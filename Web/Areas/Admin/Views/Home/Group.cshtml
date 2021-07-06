@@ -1,0 +1,100 @@
+
+@model List<Group>
+
+@section Footer {
+<script>
+    // tooltip demo
+    $('.tooltip-demo').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    })
+
+    // popover demo
+    $("[data-toggle=popover]")
+        .popover();
+    const ShowModalGroup = function (id, type, title) {
+        if (type == "edite") {
+            $("#id").val(id);
+            $("#parentId").val(0);
+            $("#groupTitle").val(title);
+        } else {
+            $("#parentId").val(id);
+            $("#id").val(0);
+        }
+    }
+</script>
+}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/Admin/AddOrUpdateGroup" method="POST" id="form-model" class="p-3">
+                <input type="hidden" id="id" name="GroupId" />
+                <input type="hidden" id="parentId" name="ParentId" />
+                <div class="form-group">
+                    <label>Group Title</label>
+                    <input class="form-control" type="text" name="GroupTitle" id="groupTitle">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<h1 class="h3 mb-0 text-gray-800 mt-5 mb-3">Groups</h1>
+
+<form class="d-flex justify-content-between" action="/Admin/AddOrUpdateGroup" method="POST">
+    <input class="p-2 w-100 form-control" name="GroupTitle" placeholder="Group title" />
+    <button type="submit" class="btn btn-primary ml-5">Add</button>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Group Title</th>
+                <th>Sub Group(s)</th>
+            </tr>
+        </thead>
+        <tbody class="b-table">
+            @foreach (var item in Model.Where(m => m.ParentId == null))
+            {
+                <tr>
+                    <td class="tooltip-demo">@item.GroupTitle
+                        <button data-toggle="tooltip" data-placement="top" title="" data-original-title="Add new subgroup"
+                        class="btn btn-primary btn-sm"><i onclick="ShowModalGroup(@item.GroupId , 'add')"
+                            class="fa fa-plus" data-toggle="modal" data-target="#myModal"></i></button>
+                        <button data-toggle="tooltip" data-placement="top" title="" data-original-title="Edite group title"
+                        class="btn btn-warning btn-sm"><i data-toggle="modal" data-target="#myModal" class="fa fa-pen"
+                            onclick="ShowModalGroup(@item.GroupId , 'edite' , '@item.GroupTitle')"></i></button>
+                        <a href="/Admin/Group/Delte/@item.GroupId" data-toggle="tooltip" data-placement="top" title=""
+                        data-original-title="Delete group" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
+                    </td>
+                    @if (item.SubId.Count != 0)
+                    {
+                        <td class="tooltip-demo">
+                            @foreach (var sub in item.SubId)
+                            {
+                                <p>@sub.GroupTitle
+                                    <button data-toggle="tooltip" data-placement="top" title=""
+                            data-original-title="Edite subgroup title" class="btn btn-warning btn-sm">
+
+                                        <i data-toggle="modal" data-target="#myModal"
+                                onclick="ShowModalGroup(@sub.GroupId , 'edite' , '@sub.GroupTitle')"
+                                class="fa fa-pen"></i></button>
+                                    <a href="/Admin/Group/Delte/@sub.GroupId" data-toggle="tooltip" data-placement="top" title=""
+                            data-original-title="Delete subgroup" class="btn btn-danger btn-sm"><i
+                                class="fa fa-times"></i></a>
+                                </p>
+                            }
+                        </td>
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

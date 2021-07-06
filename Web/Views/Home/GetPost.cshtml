@@ -1,0 +1,186 @@
+@model GetPostViewModel
+@section Header {
+<title>[Shope Name] - @Model.Title</title>
+}
+@section Nav {
+<partial name="_NavbarShadow" />
+}
+
+<!--====== Section 1 ======-->
+<div class="u-s-p-y-90">
+
+    <!--====== Detail Post ======-->
+    <div class="detail-post">
+        <div class="bp-detail">
+            <div class="bp-detail__thumbnail">
+                <!--====== Image Code ======-->
+                <div class="aspect aspect--bg-grey aspect--1366-768">
+
+                    <img class="aspect__img" src="@Model.ImageName" alt="@Model.AltImage">
+                </div>
+                <!--====== End - Image Code ======-->
+            </div>
+            <div class="bp-detail__info-wrap">
+                <div class="bp-detail__stat">
+
+                    <span class="bp-detail__stat-wrap">
+
+                        <span class="bp-detail__publish-date">
+
+                            <a href="blog-right-sidebar.html">
+
+                                <span>@Model.CreateDate</span></a></span></span>
+                </div>
+
+                <span class="bp-detail__h1">
+
+                    @Model.Title
+                </span>
+                <div class="blog-t-w">
+                    @foreach (var item in Model.Tags.Split("-"))
+                    {
+                        <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="blog-right-sidebar.html">@item</a>
+                    }
+                </div>
+                <p class="bp-detail__p">
+                    @Model.Text
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--====== End - Detail Post ======-->
+<div class="u-s-p-b-60">
+    <div class="d-meta">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="d-meta__comment-arena">
+
+                        <span class="d-meta__text u-s-m-b-36">نظر افراد</span>
+                        <div class="d-meta__comments u-s-m-b-30">
+                            <ol>
+                                @foreach (var item in Model.Comments)
+                                {
+                                    <li>
+                                        @if (item.ParentId == null)
+                                        {
+                                            <div class="d-meta__p-comment">
+                                                <div class="p-comment__wrap1">
+                                                    <div class="aspect aspect--square p-comment__img-wrap">
+
+                                                        <img src="@item.Avatar" alt="Avatar" />
+                                                    </div>
+                                                </div>
+                                                <div class="p-comment__wrap2">
+
+                                                    <span class="p-comment__author">@item.UserName</span>
+
+                                                    <span class="p-comment__timestamp">
+
+                                                        <a href="#">
+
+                                                            <span>@item.CreateDate</span></a></span>
+                                                    <p class="p-comment__paragraph">@item.Text</p>
+
+                                                    <a class="p-comment__reply" href="#"
+                                                onclick="SubComment(@item.CommentId)">Reply</a>
+                                                </div>
+                                            </div>
+
+                                        }
+                                        @if (Model.Comments.Any(c => c.ParentId == item.CommentId))
+                                        {
+                                            @foreach (var sub in Model.Comments.Where(c => c.ParentId == item.CommentId))
+                                            {
+                                                <ol class="comment-children">
+                                                    <li>
+                                                        <div class="d-meta__p-comment">
+                                                            <div class="p-comment__wrap1">
+                                                                <div class="aspect aspect--square p-comment__img-wrap">
+
+                                                                    <img src="@sub.Avatar" alt="Avatar">
+                                                                </div>
+                                                            </div>
+                                                            <div class="p-comment__wrap2">
+
+                                                                <span class="p-comment__author">@sub.UserName</span>
+
+                                                                <span class="p-comment__timestamp">
+
+                                                                    <a href="#">
+
+                                                                        <span>@sub.CreateDate</span></a></span>
+                                                                <p class="p-comment__paragraph">@sub.Text</p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ol>
+                                            }
+                                        }
+                                    </li>
+                                }
+                            </ol>
+                        </div>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <span class="d-meta__text-2 u-s-m-b-6">به گفتگو بپیوندید</span>
+                            <form class="respond__form" method="POST" action="/Post/AddComment">
+                                <input type="hidden" name="PostId" value="@Model.PostId" />
+                                <input type="hidden" id="ParentId" name="ParentId" value="0" />
+                                <div class="respond__group">
+                                    <div class="u-s-m-b-15">
+                                        <label class="gl-label" for="comment">متن</label><textarea
+                                        class="text-area text-area--primary-style" name="Text" id="comment"></textarea>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn--e-brand-shadow" type="submit">ارسال نظر</button>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="alert-error">برای ثبت نظر باید
+                                <a href="/Login">وارد</a>
+                                حساب کاربری خود شوید
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (Context.Request.Query["succes"].ToString() == "true" | Context.Request.Query["error"].ToString() == "true")
+{
+@section Footer {
+<script src="/js/sweetalert.min.js"></script>
+
+@if(Context.Request.Query["succes"].ToString() == "true")
+{
+<script>
+    swal({
+        title: "موفق",
+        text: "نظر شما با موفقعیت اضافه شد",
+        icon: "success",
+        button: "باشه",
+    });
+</script>
+}else {
+
+<script>
+    swal({
+        title: "مشکلی پیش آمده",
+        text: "لطفا تمامی موارد را وارد کنید",
+        icon: "error",
+        button: "باشه",
+    });
+</script>
+}
+
+}
+}

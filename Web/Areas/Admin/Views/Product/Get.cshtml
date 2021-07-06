@@ -1,0 +1,44 @@
+@model List<GetAllAdminProductViewModel>
+@{
+    ViewData["Title"] = "Get";
+}
+<h1 class="h3 mb-0 text-gray-800 mt-5 mb-3">Product
+    <a href="/Admin/AddProduct" class="btn btn-primary float-right">
+        <i class="fas fa-plus"></i>
+        Add new product
+    </a>
+</h1>
+
+@if (Model.Count() == 0)
+{
+    <div class="alert alert-danger" role="alert">
+    We do not have any posts yet
+</div>
+}
+else
+{
+    <div class="row">
+    @foreach (var item in Model)
+        {
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary"><a href="/product/@item.ProductId">@item.ProductName</a></h6>
+                    </div>
+
+                    <div class="card-body">
+                        <img src="@item.ImageName" class="img-fluid" alt="@item.AltImage" />
+                        <p class="mt-3">
+                            <a href="/Admin/EditeProduct/@item.ProductId" class="btn btn-warning">Edite Product</a>
+                            <a href="/Admin/DeleteProduct/@item.ProductId" class="btn ml-2 btn-danger">Delete Product</a>
+                            <a href="/Admin/product/PropertiyList/@item.ProductId" class="btn ml-2 btn-primary">Propertiy</a>
+                            <a href="/Admin/product/Gallery/@item.ProductId" class="btn ml-2 btn-info">Gallery</a>
+                        </p>
+                           
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}

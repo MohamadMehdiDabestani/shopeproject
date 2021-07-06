@@ -1,0 +1,114 @@
+@model AddProductViewModel
+@using Core.Services
+@inject IAdminServices _admin
+@{
+    ViewData["Title"] = "AddProduct";
+    var groups = await _admin.GetAllGroup();
+}
+<h1 class="h3 mb-0 text-gray-800 mt-5 mb-3">Add new product</h1>
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
+<form class="needs-validation" method="POST" enctype="multipart/form-data" action="/Admin/AddProduct" novalidate>
+    <div class="form-row">
+        <div class="col-md-12 mb-3">
+            <label for="ProductTitle">Product Title</label>
+            <input type="text" class="form-control" asp-for="ProductName" id="ProductTitle" required>
+            <span class="invalid-feedback"></span>
+            <small class="form-text text-danger"  asp-validation-for="ProductName"></small>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="BrowserTitle">Browser Title</label>
+            <input type="text" class="form-control" asp-for="ProductBrowserTitle" id="BrowserTitle" required>
+            <span class="invalid-feedback"></span>
+            <small class="form-text text-danger"  asp-validation-for="ProductBrowserTitle"></small>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="ProductBrowserDescription">Browser Description</label>
+            <input type="text" class="form-control" asp-for="ProductBrowserDescription" id="ProductBrowserDescription"
+                required>
+            <span class="invalid-feedback"></span>
+            <small class="form-text text-danger" asp-validation-for="ProductBrowserDescription"></small>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="ProductText">Product Text</label>
+            <textarea type="text" class="form-control" asp-for="ProductText" id="ProductText" required></textarea>
+            <span class="invalid-feedback" ></span>
+            <small class="form-text text-danger" asp-validation-for="ProductText"></small>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Quantity">Quantity</label>
+            <input type="number" class="form-control" asp-for="Quantity" id="Quantity" required>
+            <span class="invalid-feedback" ></span>
+            <small class="form-text text-danger"  asp-validation-for="Quantity"></small>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Price">Price</label>
+            <input type="number" class="form-control" asp-for="Price" id="Price" required>
+            <span class="invalid-feedback"></span>
+            <small class="form-text text-danger"  asp-validation-for="Price"></small>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Image">Image</label>
+            <input type="file" asp-for="Image" id="Image" required>
+            <span class="invalid-feedback"></span>
+            <small class="form-text text-danger" asp-validation-for="Image"></small>
+        </div>
+             <div class="col-md-12 mb-3">
+            <label for="AltImage">Alt image</label>
+            <input type="text" class="form-control"  asp-for="AltImage" id="AltImage" required>
+            <span class="invalid-feedback"></span>
+            <small class="form-text text-danger" asp-validation-for="AltImage"></small>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Tags">Tags</label>
+            <input type="text" class="form-control" asp-for="Tags" id="Tags" required>
+            <span class="invalid-feedback" ></span>
+            <small class="form-text text-danger" asp-validation-for="Tags"></small>
+            <small id="passwordHelpBlock" class="form-text text-muted">
+                Separate keywords with -
+            </small>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="Group">Group</label>
+            <select id="Group" asp-for="GroupId" class="form-control" required>
+                <option selected>Choose...</option>
+                @foreach (var group in groups.Where(g => g.ParentId == null))
+                {
+                    <option value="@group.GroupId">@group.GroupTitle</option>
+                }
+            </select>
+            <span class="invalid-feedback"></span>
+            <small  asp-validation-for="GroupId" class="form-text text-danger"></small>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="SubGroup">Sub group</label>
+            <select id="SubGroup" asp-for="SubGroupId" class="form-control" >
+                <option selected value="0">Choose...</option>
+                @foreach (var group in groups.Where(g => g.ParentId != null && g.ParentId == groups.First().GroupId))
+                {
+                    <option value="@group.GroupId">@group.GroupTitle</option>
+                }
+            </select>
+            <span class="invalid-feedback"></span>
+            <small  asp-validation-for="SubGroupId" class="form-text text-danger"></small>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Send</button>
+</form>
+@section Footer {
+<script>
+
+    $("#Group").change(function () {
+        $("#SubGroup").empty();
+        $.getJSON("/Admin/GetSubGroup/" + $("#Group :selected").val(), function (data) {
+            $.each(data, function () {
+                $("#SubGroup").append(`<option value=${this.value}>${this.text}</option>`)
+            })
+        })
+    })
+</script>
+}

@@ -1,0 +1,68 @@
+@model List<ProductPropertiyViewModel>
+@inject IProductServices product
+@{
+    ViewData["Title"] = "PropertiyProduct";
+    var prop = await product.GetProperty();
+}
+
+@section Footer {
+<script>
+    // tooltip demo
+    $('.tooltip-demo').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    })
+
+    // popover demo
+    $("[data-toggle=popover]")
+        .popover();
+    
+</script>
+}
+<h1 class="h3 mb-0 text-gray-800 mt-5 mb-3">Product Propertiy</h1>
+<form class="form-row" action="/Admin/AddOrUpdatePropertiyProduct" method="POST">
+    <input type="hidden" value="@ViewBag.ID"  name="ProducId" />
+    <div class="col-md-5 mb-3">
+        <input class="p-2 w-100 form-control" name="PropertiyValue" placeholder="Propertiy value" required/>
+        <span class="invalid-feedback"></span>
+    </div>
+    <div class="col-md-5 mb-3">
+        <select name="PropertiyId" id="Group" class="form-control" required>
+            <option selected>Propertiy title</option>
+            @foreach (var item in prop)
+            {
+                <option value="@item.Id">@item.ProductPropertyTitle</option>
+            }
+        </select>
+        <span class="invalid-feedback"></span>
+    </div>
+    <div class="col-md-2 mb-3">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Propertiy title</th>
+                <th>Propertiy value</th>
+            </tr>
+        </thead>
+        <tbody class="b-table">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="tooltip-demo">@item.Title
+                        
+                        <a href="/Admin/PropertiyProduct/Delete/@item.PP_ID/@item.ProductId" data-toggle="tooltip" data-placement="top" title=""
+                        data-original-title="Delete propertiy" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
+                    </td>
+        
+                    <td class="tooltip-demo">
+                        @item.Value
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

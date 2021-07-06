@@ -1,0 +1,266 @@
+@model AddReviewViewModel
+@{
+    var product = ViewBag.Product as GetProductViewModel;
+}
+
+@section Header {
+    <title>[Shope name] | @product.BTitle</title>
+    <meta name="description" content="@product.BDescription">
+}
+@section Nav {
+    <partial name="_NavbarShadow" />
+}
+<div class="u-s-p-t-90">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5">
+
+                <!--====== Product Breadcrumb ======-->
+                <div class="pd-breadcrumb u-s-m-b-30">
+                    <ul class="pd-breadcrumb__list">
+                        <li class="has-separator">
+                            <a href="/">خانه</a>
+                        </li>
+                        <li class="has-separator">
+                            <a href="/product?groupId=@product.GroupId">@product.GroupTitle</a>
+                        </li>
+                        @if (product.SubGroupTitle != null)
+                        {
+                            <li class="has-separator">
+                                <a href="/produc?groupId=@product.SunGroupId">@product.SubGroupTitle</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <!--====== End - Product Breadcrumb ======-->
+
+
+                <!--====== Product Detail Zoom ======-->
+                <div class="pd u-s-m-b-30">
+                    @if(product.Gallery != null && product.Gallery.Any()) {
+                        <div class="slider-fouc pd-wrap">
+                        <div id="pd-o-initiate" dir="rtl">
+                            @foreach (var item in product.Gallery)
+                            {
+                                <div class="pd-o-img-wrap" data-src="@item.ImageName">
+
+                                <img class="u-img-fluid" src="@item.ImageName"
+                                    data-zoom-image="@item.ImageName" alt="@item.AltImage">
+                                </div>
+                            }
+                        </div>
+
+                        <span class="pd-text">برای بزرگ نمایی کلیک کنید</span>
+                    </div>
+                    <div class="u-s-m-t-15">
+                        <div class="slider-fouc">
+                            <div id="pd-o-thumbnail" dir="rtl">
+                                @foreach (var item in product.Gallery)
+                                {
+                                    <div>
+                                        <img class="u-img-fluid" src="@item.ImageName" alt="@item.AltImage">
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    } else {
+                        <div class="alert-error">فعلا گالری ای وجود ندارد</div>
+                    }
+                </div>
+                <!--====== End - Product Detail Zoom ======-->
+            </div>
+            <div class="col-lg-7">
+
+                <!--====== Product Right Side Details ======-->
+                <div class="pd-detail">
+                    <div>
+
+                        <span class="pd-detail__name">@product.Name</span>
+                    </div>
+                    <div class="u-s-m-b-15">
+
+                        <span class="pd-detail__preview-desc">@product.Text</span>
+                    </div>
+                    <div class="u-s-m-b-15">
+                        <div class="pd-detail__inline">
+
+                            <span class="pd-detail__click-wrap"><i class="far fa-heart u-s-m-r-6"></i>
+
+                                <a href="signin.html">اضافه کردن به لیست علاقه مندی ها</a>
+
+                                
+                        </div>
+                    </div>
+                 
+                    <div class="u-s-m-b-15">
+                        <form class="pd-detail__form" method="POST" action="/Account/AddCart" >
+                            <input name="ProductId" type="hidden" value="@product.Id">
+                            <div class="pd-detail-inline-2">
+                                <div class="u-s-m-b-15">
+
+                                    <!--====== Input Counter ======-->
+                                    <div class="input-counter">
+
+                                        <span class="input-counter__minus fas fa-minus"></span>
+
+                                        <input class="input-counter__text input-counter--text-primary-style" type="number"
+                                            name="Count"
+                                            value="1" data-min="1" data-max="@product.Count">
+
+                                        <span class="input-counter__plus fas fa-plus"></span>
+                                    </div>
+                                    <!--====== End - Input Counter ======-->
+                                </div>
+                                <div class="u-s-m-b-15">
+
+                                    <button class="btn btn--e-brand-b-2" type="submit">اضافه کردن به سبد</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--====== End - Product Right Side Details ======-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="u-s-p-y-90">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="pd-tab">
+                                <div class="u-s-m-b-30">
+                                    <ul class="nav pd-tab__list">
+                                        <li class="nav-item">
+
+                                            <a class="nav-link show" data-toggle="tab" href="#pd-desc">مشخصات</a></li>
+
+                                            <li>
+                                                <a class="nav-link show active" id="view-review" data-toggle="tab" href="#pd-rev">نظرات
+
+                                                <span>(@(@product.Review != null ? product.Review.Count : 0))</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content">
+
+                                    <div class="tab-pane fade" id="pd-desc">
+                                        <div class="pd-tab__desc">
+                                            <div class="u-s-m-b-15">
+                                            </div>
+
+                                            @if(product.Propertiy != null && product.Propertiy.Count > 0)
+                                            {
+                                                <div class="u-s-m-b-15">
+                                                <h4>مشخصات کالا</h4>
+                                            </div>
+                                            <div class="u-s-m-b-15">
+                                                <div class="pd-table gl-scroll">
+                                                    <table>
+                                                        <tbody>
+                                                            @foreach (var item in product.Propertiy)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.Title</td>
+                                                                    <td>@item.Value</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            }else{
+                                                <div class="alert-error">این کالا فعلا مشخصاتی ندارد</div>
+                                            }
+                                        </div>
+                                    </div>
+                                 
+                                    <div class="tab-pane show active" id="pd-rev">
+                                        <div class="pd-tab__rev">
+                                            <div class="u-s-m-b-30">
+                                                <div class="pd-tab__rev-score">
+                                                    <div class="u-s-m-b-8">
+                                                        <h2>کل نظرات</h2>
+                                                    </div>
+                                                    <div class="u-s-m-b-8">
+                                                        <h4>ما میخواهیم صدای شما را بشنویم</h4>
+                                                    </div>
+                                                    <span class="gl-text">نظر خودتان را در باره ی این کالا بگویید</span>
+                                                </div>
+                                            </div>
+                                            <div class="u-s-m-b-30">
+                                                @if(product.Review != null && product.Review.Count > 0){
+                                                    <form class="pd-tab__rev-f1">
+                                                    <div class="rev-f1__review">
+                                                        @foreach (var item in product.Review)
+                                                        {
+                                                            <div class="review-o u-s-m-b-15">
+                                                                <div class="review-o__info u-s-m-b-8">
+                                                                    <span class="review-o__name">@item.UserName</span>
+                                                                    <span class="review-o__date">@item.CreateDate</span></div>
+                                                                <p class="review-o__text">@item.Text</p>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </form>
+                                                }else{
+                                                    <div class="alert-error">فعلا نظری وجود ندارد</div>
+                                                }
+                                            </div>
+                                            <div class="u-s-m-b-30">
+                                                <form class="pd-tab__rev-f2" action="/product/@product.Id" method="POST">
+                                                    <input name="ProductId" type="hidden" value="@product.Id" />
+                                                    <h2 class="u-s-m-b-15">نظرتان را بگویید</h2>
+                                                    <span class="gl-text u-s-m-b-15">تنها نظر شما نمایش داده خواهد شد</span>
+                                                    <div class="rev-f2__group">
+                                                        <div class="u-s-m-b-15">
+                                                            <label class="gl-label" for="reviewer-text">نظر شما</label><textarea
+                                                                class="text-area text-area--primary-style" id="reviewer-text" asp-for="Text"></textarea>
+                                                        </div>
+                                                        <span asp-validation-for="Text" class="error-text"></span>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn--e-brand-shadow" type="submit">ارسال</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+@if (Context.Request.Query["succes"].ToString() == "true" | Context.Request.Query["error"].ToString() == "true")
+{
+@section Footer {
+<script src="/js/sweetalert.min.js"></script>
+
+
+@if(Context.Request.Query["succes"].ToString() == "true")
+{
+<script>
+    swal({
+        title: "موفق",
+        text: "عملیات با موفقیت انجام شد",
+        icon: "success",
+        button: "باشه",
+    });
+</script>
+}else {
+
+<script>
+    swal({
+        title: "مشکلی پیش آمده",
+        text: "لطفا تمامی موارد را وارد کنید",
+        icon: "error",
+        button: "باشه",
+    });
+</script>
+}
+
+}
+}

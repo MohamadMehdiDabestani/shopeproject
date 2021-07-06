@@ -1,0 +1,73 @@
+@model AddGalleryViewModel
+@{
+    ViewData["Title"] = "Gallery";
+    var list = ViewBag.List as List<GetGalleryViewModel>;
+}
+@section Footer {
+<script>
+    // tooltip demo
+    $('.tooltip-demo').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    })
+
+    // popover demo
+    $("[data-toggle=popover]")
+        .popover();
+
+</script>
+}
+
+<h1 class="h3 mb-0 text-gray-800 mt-5 mb-3">Product Gallery</h1>
+<form class="form-row" action="/Admin/AddGalleryProduct" method="POST" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ProductId" />
+    <span class="invalid-feedback"></span>
+    <small class="form-text text-danger" asp-validation-for="ProductId"></small>
+    <div class="col-md-7 mb-3">
+        <input type="text" class="p-2 w-100 form-control" asp-for="AltImage" placeholder="Alt image" required />
+        <span class="invalid-feedback"></span>
+        <small class="form-text text-danger" asp-validation-for="AltImage"></small>
+    </div>
+    <div class="col-md-3 mb-3">
+        <input type="file" class="p-2 w-100" asp-for="Image" required />
+        <span class="invalid-feedback"></span>
+        <small class="form-text text-danger" asp-validation-for="Image"></small>
+    </div>
+    <div class="col-md-2 mb-3">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+</form>
+@if (list.Count() == 0)
+{
+    <div class="alert alert-danger">We do not have any gallery image yet</div>
+}
+else
+{
+    <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Alt image</th>
+                <th>Option</th>
+            </tr>
+        </thead>
+        <tbody class="b-table">
+            @foreach (var item in list)
+                {
+                    <tr>
+                        <td>
+                            <img  src="@item.ImageName" alt="@item.AltImage" class="w-25" />
+                        </td>
+                        <td>
+                            @item.AltImage
+                        </td>
+                        <td>
+                            <a href="/Admin/Product/DeleteGallery/@item.GalleryId/@item.ProductId" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

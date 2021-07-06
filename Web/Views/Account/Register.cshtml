@@ -1,0 +1,118 @@
+@model RegisterViewModel
+@{
+    var asd = Context.Request.Query["Test"].ToString();
+}
+@section Header {
+<title>Register</title>
+}
+@section Nav {
+<partial name="_NavbarShadow" />
+}
+
+<!--====== Section 1 ======-->
+<div class="u-s-p-y-60">
+
+    <!--====== Section Content ======-->
+    <div class="section__content">
+        <div class="container">
+            <div class="breadcrumb">
+                <div class="breadcrumb__wrap">
+                    <ul class="breadcrumb__list">
+                        <li class="has-separator">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="is-marked">
+                            <a href="/Register">Signup</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--====== End - Section 1 ======-->
+
+
+<!--====== Section 2 ======-->
+<div class="u-s-p-b-60">
+
+    <!--====== Section Intro ======-->
+    <div class="section__intro u-s-m-b-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section__text-wrap">
+                        <h1 class="section__heading u-c-secondary">ساخت حساب</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====== End - Section Intro ======-->
+
+
+    <!--====== Section Content ======-->
+    <div class="section__content">
+        <div class="container">
+            <div class="row row--center">
+                <div class="col-lg-6 col-md-8 u-s-m-b-30">
+                    <div class="l-f-o">
+                        <div class="l-f-o__pad-box">
+                            @if (ViewBag.Succes != null)
+                            {
+                                <div class="alert-succes">حساب شما ایجاد شد . با استفاده از ایمیلی که به آدرس ایمیل شما ارسال شده است آن را فعال کنید</div>
+                                    
+                            }
+                            
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="toast err"><i class="fa fa-times"></i>@ViewBag.Error</div>
+                            }
+                            <h1 class="gl-h1">اطلاعات شما</h1>
+                            <form class="l-f-o__form" method="POST" action="/Register" asp-antiforgery="true">
+                                <div class="gl-s-api">
+
+                                    <div class="u-s-m-b-30">
+
+                                        <button class="gl-s-api__btn gl-s-api__btn--gplus" type="button"><i
+                                                class="fab fa-google"></i>
+
+                                            <span>ورود با گوگل</span></button>
+                                    </div>
+                                </div>
+                                <div class="u-s-m-b-30">
+
+                                    <label class="gl-label" for="reg-fname">نام کاربری *</label>
+
+                                    <input class="input-text input-text--primary-style" type="text" id="reg-fname"
+                                        asp-for="UserName" placeholder="نام کاربری" required>
+                                    <span asp-validation-for="UserName" class="error-text"></span>
+                                </div>
+
+
+                                <div class="u-s-m-b-30">
+
+                                    <label class="gl-label" for="reg-email">ایمیل *</label>
+
+                                    <input asp-for="Email" class="input-text input-text--primary-style" type="email"
+                                        id="reg-email" placeholder="آدرس ایمیل" required>
+                                    <span asp-validation-for="Email" class="error-text"></span>
+                                </div>
+                                <div class="u-s-m-b-30">
+
+                                    <label class="gl-label" for="reg-password">رمز عبور *</label>
+
+                                    <input asp-for="Password" class="input-text input-text--primary-style"
+                                        type="password" id="reg-password" required placeholder="رمز عبور">
+                                    <span asp-validation-for="Password" class="error-text"></span>
+                                </div>
+                                <div class="u-s-m-b-15">
+                                    <button class="btn btn--e-transparent-brand-b-2" type="submit">ساخت حساب</button>
+                                </div>
+
+                                <a class="gl-link" href="/">بازگشت به فروشگاه</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>

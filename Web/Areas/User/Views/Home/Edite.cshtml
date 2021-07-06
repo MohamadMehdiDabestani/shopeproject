@@ -1,0 +1,108 @@
+@model EditeAccountViewModel
+@section Header {
+<title>[shope name] - حساب کاربری</title>
+<meta name="description"
+    content="شما میتوانید از طریق این صفه اطلاعات خود را ویرایش کنید و همچنین سفارشاهایتان را بررسی کنید">
+}
+@section Nav {
+<partial name="_NavbarShadow" />
+}
+<!--====== Section 1 ======-->
+<div class="u-s-p-y-60">
+
+    <!--====== Section Content ======-->
+    <div class="section__content">
+        <div class="container">
+            <div class="breadcrumb">
+                <div class="breadcrumb__wrap">
+                    <ul class="breadcrumb__list">
+                        <li class="has-separator">
+
+                            <a href="/">خانه</a>
+                        </li>
+                        <li class="has-separator">
+
+                            <a href="/account">حساب کاربری</a>
+                        </li>
+                        <li class="is-marked">
+
+                            <a href="/account/edite">ویرایش حساب کاربری</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--====== End - Section 1 ======-->
+
+
+<!--====== Section 2 ======-->
+<div class="u-s-p-b-60">
+
+    <!--====== Section Content ======-->
+    <div class="section__content">
+        <div class="dash">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-12">
+
+                        <!--====== Dashboard Features ======-->
+                        <partial name="_List" />
+                        <partial name="_History" />
+                        <!--====== End - Dashboard Features ======-->
+                    </div>
+                    <div class="col-lg-9 col-md-12">
+                        <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                            <div class="dash__pad-2">
+                                <h1 class="dash__h1 u-s-m-b-14">ویرایش حساب کاربری</h1>
+
+                                <span class="dash__text u-s-m-b-30">در صورت تغییر ایمیل شما مجدد باید حساب خود را فعال
+                                    کنید</span>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <form class="dash-edit-p" method="POST" asp-antiforgery="true" action="/Account/Edite">
+                                            <div class="gl-inline">
+                                                <div class="u-s-m-b-30">
+
+                                                    <label class="gl-label" for="Name">نام کاربری</label>
+
+                                                    <input class="input-text input-text--primary-style" type="text"
+                                                        id="Name" asp-for="UserName" placeholder="نام کاربری" required>
+                                                    <span asp-validation-for="UserName"></span>
+                                                </div>
+                                                <div class="u-s-m-b-30">
+
+                                                    <label class="gl-label" for="Email">ایمیل</label>
+
+                                                    <input class="input-text input-text--primary-style" type="email"
+                                                        required id="Email" asp-for="Email" placeholder="آدرس ایمیل">
+                                                    <span asp-validation-for="Email"></span>
+                                                </div>
+                                            </div>
+                                            <div class="gl-inline">
+                                                <div class="u-s-m-b-30">
+                                                    <label class="gl-label" for="Phone">موبایل</label>
+                                                    <input class="input-text input-text--primary-style" type="number"
+                                                        id="Phone" placeholder="شماره ی همراه" asp-for="Phone">
+                                                    <span asp-validation-for="Phone"></span>
+                                                </div>
+                                                <div class="u-s-m-b-30">
+                                                    <label class="gl-label" for="Image">پروفایل</label>
+                                                    <input asp-for="Image" type="file" id="Image" />
+                                                </div>
+                                            </div>
+                                            <button class="btn btn--e-brand-b-2" type="submit">ذخیره</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====== End - Section Content ======-->
+</div>
+<!--====== End - Section 2 ======-->
