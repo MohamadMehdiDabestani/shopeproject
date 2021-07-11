@@ -77,7 +77,9 @@ namespace Web.Controllers
                     Text = p.ReviewText,
                     UserName = p.user.UserName
                 }).ToList() : null,
-                Count = product.Quantity
+                Count = product.Quantity,
+                IsInCart = User.Identity.IsAuthenticated ? await _product.CheckProductInCart(int.Parse(User.Claims.First(u=> u.Type == ClaimTypes.NameIdentifier).Value) , product.Id) : false,
+                IsInWhishList = User.Identity.IsAuthenticated ? await _product.CheckProductInWhishList(product.Id , int.Parse(User.Claims.First(u=> u.Type == ClaimTypes.NameIdentifier).Value)) : false
             };
             return View();
         }

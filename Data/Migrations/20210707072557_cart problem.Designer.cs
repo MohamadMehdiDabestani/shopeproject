@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(ShopeDbContext))]
-    partial class ShopeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210707072557_cart problem")]
+    partial class cartproblem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,49 +79,6 @@ namespace Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comment");
-                });
-
-            modelBuilder.Entity("Data.Models.Factor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Addres")
-                        .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("Phone")
-                        .HasMaxLength(200)
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostalCode")
-                        .HasMaxLength(10)
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Factor");
                 });
 
             modelBuilder.Entity("Data.Models.Gallery", b =>
@@ -497,17 +456,6 @@ namespace Data.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("Data.Models.Factor", b =>
-                {
-                    b.HasOne("Data.Models.User", "user")
-                        .WithMany("Factor")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("Data.Models.Gallery", b =>
                 {
                     b.HasOne("Data.Models.Product", "Product")
@@ -663,8 +611,6 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.User", b =>
                 {
                     b.Navigation("comment");
-
-                    b.Navigation("Factor");
 
                     b.Navigation("Post");
                 });

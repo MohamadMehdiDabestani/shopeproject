@@ -32,6 +32,9 @@ namespace Data
         
         public DbSet<WhishList> WhishList { get; set; }
         
+        public DbSet<Factor> Factor { get; set; }
+        
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

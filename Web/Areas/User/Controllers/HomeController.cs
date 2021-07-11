@@ -13,6 +13,7 @@ using Core.ViewModels;
 using Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Data.Models;
 
 namespace Web.Areas.Controllers
 {
@@ -142,5 +143,62 @@ namespace Web.Areas.Controllers
             }
             return Redirect("/");
         }
+        [Route("/Account/AddWhishList")]
+        public async Task<IActionResult> AddWhishList(int productId)
+        {
+            var whishList = new WhishList()
+            {
+                ProductId = productId,
+                UserId = int.Parse(User.Claims.First(u => u.Type == ClaimTypes.NameIdentifier).Value)
+            };
+            await _user.AddWhishList(whishList);
+            return Redirect($"/product/{productId}?succes=true");
+        }
+        [Route("/Account/Wishlist")]
+        public async Task<IActionResult> GetWishlist()
+        {
+            var model = await _user.GetWishList(int.Parse(User.Claims.First(u => u.Type == ClaimTypes.NameIdentifier).Value));
+            return View(model);
+        }
+        [Route("/Account/DeleteWish")]
+        public async Task<IActionResult> DeleteWish()
+        {
+            await _user.DeleteWish(0, int.Parse(User.Claims.First(u => u.Type == ClaimTypes.NameIdentifier).Value));
+            return Redirect("/Account/WishList");
+        }
+
+        [Route("/Account/DeleteWish/{id}")]
+        public async Task<IActionResult> DeleteWish(int id)
+        {
+            await _user.DeleteWish(id, int.Parse(User.Claims.First(u => u.Type == ClaimTypes.NameIdentifier).Value));
+            return Redirect("/Account/WishList");
+        }
+        [Route("/Account/DeleteCart")]
+        public async Task<IActionResult> DeleteCart()
+        {
+            await _user.DeleteCart(0, int.Parse(User.Claims.First(u => u.Type == ClaimTypes.NameIdentifier).Value));
+            return Redirect("/Account/Cart");
+        }
+        [Route("/Account/DeleteCart/{id}")]
+        public async Task<IActionResult> DeleteCart(int id)
+        {
+            await _user.DeleteCart(id, int.Parse(User.Claims.First(u => u.Type == ClaimTypes.NameIdentifier).Value));
+            return Redirect("/Account/Cart");
+        }
+        [Route("/Account/UpdateCart")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateCart(UpdateCartViewModel model)
+        {
+            await _user.UpdateCart(model);
+            return Redirect("/Account/Cart");
+        }
+        [HttpGet]
+        [Route("/Account/Checkout")]
+        public async Task<IActionResult> Checkout()
+        {
+            ViewBag.Cart = await _user.GetCart(int.Parse(User.Claims.First(c=> c.Type == ClaimTypes.NameIdentifier).Value));
+            return View();
+        }
+
     }
 }

@@ -21,8 +21,16 @@ namespace Core.Services
 
         Task<AccountViewModel> GetUserAccount(int id);
 
-        Task<List<GetCartViewModel>> GetCart(int UserId);
+        Task<List<GetCartViewModel>> GetCart(int userId);
+
+        Task DeleteWish(int? id , int userId);
+        Task DeleteCart(int? id , int userId);
+        Task UpdateCart(UpdateCartViewModel model);
 
         Task AddCart(AddCartViewModel cart , int userId);
+        
+        Task AddWhishList(WhishList whishList );
+
+        Task<List<GetWishListViewModel>> GetWishList(int userId);
     }
 }

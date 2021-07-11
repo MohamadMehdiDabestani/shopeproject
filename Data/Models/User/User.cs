@@ -49,6 +49,6 @@ namespace Data.Models
 
         public List<Comment> comment { get; set; }
         
-        
+        public List<Factor> Factor { get; set; }
     }
 }

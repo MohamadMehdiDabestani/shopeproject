@@ -75,6 +75,6 @@ namespace Data.Models
         public List<Reviews>? Review { get; set; }
         
         #nullable enable
-        public List<Cart>? CartId { get; set; }
+        public List<Cart>? Cart { get; set; }
     }
 }

@@ -208,7 +208,9 @@ namespace Core.ViewModels
         public List<GetPropertiyProductViewModel>? Propertiy { get; set; }
 
         public int Id { get; set; }
-
+        
+        public bool IsInWhishList { get; set; }
+        
         public string Name { get; set; }
 
         public string Text { get; set; }
@@ -237,6 +239,8 @@ namespace Core.ViewModels
         public List<GetReview>? Review { get; set; }
 
         public int Count { get; set; }
+
+        public bool IsInCart { get; set; }
     }
     public class GetGalleryProductViewModel
     {

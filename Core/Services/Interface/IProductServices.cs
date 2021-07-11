@@ -45,5 +45,9 @@ namespace Core.Services
         Task DeleteGallery(Gallery gallery);
 
         Task AddReview(AddReviewViewModel model , int userId);
+
+        Task<bool> CheckProductInCart(int userId , int productId);
+
+        Task<bool> CheckProductInWhishList(int productId , int userId);
     }
 }

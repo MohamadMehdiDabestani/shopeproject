@@ -184,5 +184,15 @@ namespace Core.Services
             });
             await _db.SaveChangesAsync();
         }
+
+        public async Task<bool> CheckProductInCart(int userId, int productId)
+        {
+            return !(await _db.Cart.AnyAsync(c=> c.ProductId == productId && c.UserId == userId));
+        }
+
+        public async Task<bool> CheckProductInWhishList(int productId, int userId)
+        {
+            return !(await _db.WhishList.AnyAsync(w=> w.UserId == userId && productId == w.ProductId));
+        }
     }
 }

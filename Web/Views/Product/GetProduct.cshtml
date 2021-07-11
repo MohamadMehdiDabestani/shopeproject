@@ -82,24 +82,24 @@
 
                         <span class="pd-detail__preview-desc">@product.Text</span>
                     </div>
-                    <div class="u-s-m-b-15">
+                    @if(product.IsInWhishList){
+                        <div class="u-s-m-b-15">
                         <div class="pd-detail__inline">
 
                             <span class="pd-detail__click-wrap"><i class="far fa-heart u-s-m-r-6"></i>
 
-                                <a href="signin.html">اضافه کردن به لیست علاقه مندی ها</a>
-
-                                
+                                <a href="/Account/AddWhishList?productId=@product.Id">اضافه کردن به لیست علاقه مندی ها</a>
                         </div>
                     </div>
+                    }
                  
-                    <div class="u-s-m-b-15">
+                    @if(product.IsInCart){
+                        <div class="u-s-m-b-15">
                         <form class="pd-detail__form" method="POST" action="/Account/AddCart" >
                             <input name="ProductId" type="hidden" value="@product.Id">
                             <div class="pd-detail-inline-2">
                                 <div class="u-s-m-b-15">
 
-                                    <!--====== Input Counter ======-->
                                     <div class="input-counter">
 
                                         <span class="input-counter__minus fas fa-minus"></span>
@@ -110,17 +110,16 @@
 
                                         <span class="input-counter__plus fas fa-plus"></span>
                                     </div>
-                                    <!--====== End - Input Counter ======-->
+                                    
                                 </div>
                                 <div class="u-s-m-b-15">
-
                                     <button class="btn btn--e-brand-b-2" type="submit">اضافه کردن به سبد</button>
                                 </div>
                             </div>
                         </form>
                     </div>
+                    } 
                 </div>
-                <!--====== End - Product Right Side Details ======-->
             </div>
         </div>
     </div>
