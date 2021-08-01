@@ -190,8 +190,6 @@ namespace Core.ViewModels
         public string ImageName { get; set; }
 
         public string AltImage { get; set; }
-
-
     }
     public class GetProductViewModel
     {
@@ -201,16 +199,16 @@ namespace Core.ViewModels
             Propertiy = new List<GetPropertiyProductViewModel>();
             Review = new List<GetReview>();
         }
-        #nullable enable
+#nullable enable
         public List<GetGalleryProductViewModel>? Gallery { get; set; }
 
-        #nullable enable
+#nullable enable
         public List<GetPropertiyProductViewModel>? Propertiy { get; set; }
 
         public int Id { get; set; }
-        
+
         public bool IsInWhishList { get; set; }
-        
+
         public string Name { get; set; }
 
         public string Text { get; set; }
@@ -223,19 +221,19 @@ namespace Core.ViewModels
 
         public string AltImage { get; set; }
 
-        #nullable enable
+#nullable enable
         public string? SubGroupTitle { get; set; }
 
         public int GroupId { get; set; }
 
-        #nullable enable
+#nullable enable
         public int? SunGroupId { get; set; }
 
         public string BTitle { get; set; }
 
         public string BDescription { get; set; }
 
-        #nullable enable
+#nullable enable
         public List<GetReview>? Review { get; set; }
 
         public int Count { get; set; }
@@ -277,11 +275,84 @@ namespace Core.ViewModels
         [Required]
         public int ProductId { get; set; }
     }
-    public class AddCartViewModel 
+    public class AddCartViewModel
     {
         [Required]
         public int Count { get; set; }
         [Required]
         public int ProductId { get; set; }
+    }
+    public class GetAllOrdersViewModel
+    {
+        public int Count { get; set; }
+        public int Price { get; set; }
+        public string CreateDate { get; set; }
+        public string Status { get; set; }
+        public int Id { get; set; }
+    }
+    public class EditeOrderViewModel
+    {
+        [Required]
+        public string Status { get; set; }
+        
+        [Required]
+        public int Id { get; set; }
+    }
+    public class HomeViewModel 
+    {
+        public List<GetAllProductViewModel> Random { get; set; }
+        
+        public List<GetAllProductViewModel> LastProduct { get; set; }
+    }
+    public class CarouselItemViewModel 
+    {
+        public string Title { get; set; }
+        
+        public string Text { get; set; }
+        
+        public string Link { get; set; }
+        
+        public string ImageName { get; set; }
+        
+        public int Price { get; set; }
+    }
+    public class GetCarouselAdminViewModel 
+    {
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Text { get; set; }
+
+        public int Price { get; set; }
+
+        public string Link { get; set; }
+
+        public string Image { get; set; }
+        
+    }
+    public class AddCarouselViewModel 
+    {
+        [Required(ErrorMessage = "Please Enter {0}")]
+        [Display(Name = "Title")]
+        [MaxLength(100)]
+        public string Title { get; set; }
+
+       [Required(ErrorMessage = "Please Enter {0}")]
+        [Display(Name = "Text")]
+        [MaxLength(200)]
+        public string Text { get; set; }
+
+        [Required(ErrorMessage = "Please Enter {0}")]
+        [Display(Name = "Price")]
+        public int Price { get; set; }
+
+        [Required(ErrorMessage = "Please Enter {0}")]
+        [Display(Name = "Link")]
+        [MaxLength(200)]
+        public string Link { get; set; }
+
+        [Required]
+        public IFormFile Image { get; set; }
     }
 }

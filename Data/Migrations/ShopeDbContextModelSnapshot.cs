@@ -19,6 +19,41 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
+            modelBuilder.Entity("Data.Models.Carousel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carousel");
+                });
+
             modelBuilder.Entity("Data.Models.Cart", b =>
                 {
                     b.Property<int>("Id")
@@ -91,6 +126,9 @@ namespace Data.Migrations
                         .HasMaxLength(600)
                         .HasColumnType("nvarchar(600)");
 
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -99,13 +137,21 @@ namespace Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("Phone")
-                        .HasMaxLength(200)
-                        .HasColumnType("int");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<int>("PostalCode")
                         .HasMaxLength(10)
                         .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -385,6 +431,32 @@ namespace Data.Migrations
                     b.ToTable("Role");
                 });
 
+            modelBuilder.Entity("Data.Models.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("WalletId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("Transaction");
+                });
+
             modelBuilder.Entity("Data.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -405,8 +477,10 @@ namespace Data.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
@@ -435,6 +509,26 @@ namespace Data.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Data.Models.Wallet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("Wallet");
+                });
+
             modelBuilder.Entity("Data.Models.WhishList", b =>
                 {
                     b.Property<int>("Id")
@@ -455,6 +549,21 @@ namespace Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WhishList");
+                });
+
+            modelBuilder.Entity("FactorProduct", b =>
+                {
+                    b.Property<int>("FactorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("productsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FactorId", "productsId");
+
+                    b.HasIndex("productsId");
+
+                    b.ToTable("FactorProduct");
                 });
 
             modelBuilder.Entity("Data.Models.Cart", b =>
@@ -529,7 +638,7 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Post", b =>
                 {
                     b.HasOne("Data.Models.User", "user")
-                        .WithMany("Post")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -592,6 +701,15 @@ namespace Data.Migrations
                     b.Navigation("user");
                 });
 
+            modelBuilder.Entity("Data.Models.Transaction", b =>
+                {
+                    b.HasOne("Data.Models.Wallet", "wallet")
+                        .WithMany("transaction")
+                        .HasForeignKey("WalletId");
+
+                    b.Navigation("wallet");
+                });
+
             modelBuilder.Entity("Data.Models.User", b =>
                 {
                     b.HasOne("Data.Models.Role", "Role")
@@ -599,6 +717,17 @@ namespace Data.Migrations
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Data.Models.Wallet", b =>
+                {
+                    b.HasOne("Data.Models.User", "user")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Data.Models.WhishList", b =>
@@ -610,7 +739,7 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Data.Models.User", "User")
-                        .WithMany()
+                        .WithMany("WishList")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -618,6 +747,21 @@ namespace Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FactorProduct", b =>
+                {
+                    b.HasOne("Data.Models.Factor", null)
+                        .WithMany()
+                        .HasForeignKey("FactorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("productsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data.Models.Comment", b =>
@@ -666,7 +810,12 @@ namespace Data.Migrations
 
                     b.Navigation("Factor");
 
-                    b.Navigation("Post");
+                    b.Navigation("WishList");
+                });
+
+            modelBuilder.Entity("Data.Models.Wallet", b =>
+                {
+                    b.Navigation("transaction");
                 });
 #pragma warning restore 612, 618
         }

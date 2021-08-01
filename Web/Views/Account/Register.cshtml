@@ -19,10 +19,10 @@
                 <div class="breadcrumb__wrap">
                     <ul class="breadcrumb__list">
                         <li class="has-separator">
-                            <a href="/">Home</a>
+                            <a href="/">خانه</a>
                         </li>
                         <li class="is-marked">
-                            <a href="/Register">Signup</a>
+                            <a href="/Register">ثبت نام</a>
                         </li>
                     </ul>
                 </div>
@@ -58,28 +58,8 @@
                 <div class="col-lg-6 col-md-8 u-s-m-b-30">
                     <div class="l-f-o">
                         <div class="l-f-o__pad-box">
-                            @if (ViewBag.Succes != null)
-                            {
-                                <div class="alert-succes">حساب شما ایجاد شد . با استفاده از ایمیلی که به آدرس ایمیل شما ارسال شده است آن را فعال کنید</div>
-                                    
-                            }
-                            
-                            @if (ViewBag.Error != null)
-                            {
-                                <div class="toast err"><i class="fa fa-times"></i>@ViewBag.Error</div>
-                            }
                             <h1 class="gl-h1">اطلاعات شما</h1>
                             <form class="l-f-o__form" method="POST" action="/Register" asp-antiforgery="true">
-                                <div class="gl-s-api">
-
-                                    <div class="u-s-m-b-30">
-
-                                        <button class="gl-s-api__btn gl-s-api__btn--gplus" type="button"><i
-                                                class="fab fa-google"></i>
-
-                                            <span>ورود با گوگل</span></button>
-                                    </div>
-                                </div>
                                 <div class="u-s-m-b-30">
 
                                     <label class="gl-label" for="reg-fname">نام کاربری *</label>
@@ -116,3 +96,33 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    @if (ViewBag.Error != null)
+    {
+        @section Footer {
+    <script src="/js/sweetalert.min.js"></script>
+    <script>
+        swal({
+            title: "مشکلی پیش آمده",
+            text: "ایمیل از قبل وارد شده",
+            icon: "error",
+            button: "باشه",
+        });
+    </script>
+    }
+    }
+    @if (ViewBag.Succes != null)
+    {
+        @section Footer {
+    <script src="/js/sweetalert.min.js"></script>
+    <script>
+        swal({
+            title: "موفق",
+            text: "حساب شما ساخته شد جهت فعال سازی حساب خود از طریق ایمیل فرستاده شده اقدام کنید",
+            icon: "success",
+            button: "باشه",
+        });
+    </script>
+    }
+    }

@@ -1,0 +1,59 @@
+@model List<GetAllOrdersViewModel>
+@{
+    ViewData["Title"] = "Orders";
+}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/Admin/UpdateStatusOrder" method="POST" id="form-model" class="p-3">
+                <input type="hidden" id="id" name="Id" />
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" class="form-control" name="Status">
+                        <option value="DELIVERED">DELIVERED</option>
+                        <option value="SHIPPED">SHIPPED</option>
+                        <option value="PROCESSING">PROCESSING</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<h1 class="h3 mb-0 text-gray-800 mt-5 mb-3">Orders</h1>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-5">
+            <div class="shadow mb-4 p-3">
+                <p>Status : @item.Status</p>
+                <p>Price : @item.Price</p>
+                <p>Count : @item.Count</p>
+                <button class="btn btn-info" onclick="ShowModalGroup(@item.Id)" data-toggle="modal"
+                data-target="#myModal">Edite Status</button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Footer {
+<script>
+    // tooltip demo
+    $('.tooltip-demo').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    })
+
+    // popover demo
+    $("[data-toggle=popover]")
+        .popover();
+    const ShowModalGroup = function (id) {
+        $("#id").val(id);
+    }
+</script>
+}

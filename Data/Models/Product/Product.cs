@@ -76,5 +76,8 @@ namespace Data.Models
         
         #nullable enable
         public List<Cart>? Cart { get; set; }
+        
+        #nullable enable
+        public ICollection<Factor>? Factor { get; set; }
     }
 }

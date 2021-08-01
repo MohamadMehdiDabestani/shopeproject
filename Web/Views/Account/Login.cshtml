@@ -61,10 +61,12 @@
                         <div class="l-f-o__pad-box">
                             <h1 class="gl-h1">من کاربر جدید سایت هستم</h1>
 
-                            <span class="gl-text u-s-m-b-30">با ساخت یک حساب در سایت [نام سایت] شما میتوانید از خدمات و کالاهای ما استفاده کنید</span>
+                            <span class="gl-text u-s-m-b-30">با ساخت یک حساب در سایت [نام سایت] شما میتوانید از خدمات و
+                                کالاهای ما استفاده کنید</span>
                             <div class="u-s-m-b-15">
 
-                                <a class="l-f-o__create-link btn--e-transparent-brand-b-2" href="/Register">ساخت حساب</a>
+                                <a class="l-f-o__create-link btn--e-transparent-brand-b-2" href="/Register">ساخت
+                                    حساب</a>
                             </div>
 
                             <h1 class="gl-h1">ورود</h1>
@@ -72,24 +74,6 @@
                             <span class="gl-text u-s-m-b-30">اگر حساب کاربری دارید میتوانید وارد آن شوید</span>
                             <form class="l-f-o__form" asp-antiforgery="true" method="POST" asp-action="Login">
                                 <input type="hidden" value="@returnurl" asp-for="Redirect" />
-                                <div class="gl-s-api">
-                                    <div class="u-s-m-b-15">
-
-                                        <button class="gl-s-api__btn gl-s-api__btn--gplus" type="button"><i
-                                                class="fab fa-google"></i>
-                                            <span>ورود با حساب گوگل</span></button>
-                                    </div>
-                                </div>
-                                @if (ViewBag.Error != null)
-                                {
-                                    <div class="toast err"><i class="fa fa-times"></i>@ViewBag.Error</div>
-                                }
-                                @if (Context.Request.Query["active"].ToString() == "true")
-                                {
-                                    <div class="alert-succes u-s-m-b-30 u-s-m-t-30">
-                                        حساب شما با موفقیت فعال شد . هم اکنون وارد شوید
-                                    </div>
-                                }
                                 <div class="u-s-m-b-30">
 
                                     <label class="gl-label" for="login-email">ایمیل *</label>
@@ -102,8 +86,8 @@
 
                                     <label class="gl-label" for="login-password">رمز عبور *</label>
 
-                                    <input class="input-text input-text--primary-style" type="password" id="login-password"
-                                        placeholder="رمز عبور" required asp-for="Password">
+                                    <input class="input-text input-text--primary-style" type="password"
+                                        id="login-password" placeholder="رمز عبور" required asp-for="Password">
                                     <span asp-validation-for="Password" class="error-text"></span>
                                 </div>
                                 <div class="gl-inline">
@@ -139,3 +123,31 @@
     <!--====== End - Section Content ======-->
 </div>
 <!--====== End - Section 2 ======-->
+@if (ViewBag.Error != null)
+{
+    @section Footer {
+<script src="/js/sweetalert.min.js"></script>
+<script>
+    swal({
+        title: "مشکلی پیش آمده",
+        text: "کاربری یافت نشد",
+        icon: "error",
+        button: "باشه",
+    });
+</script>
+}
+}
+@if (Context.Request.Query["active"].ToString() == "true")
+{
+@section Footer {
+<script src="/js/sweetalert.min.js"></script>
+<script>
+    swal({
+        title: "موفق",
+        text: "حساب کاربری شما با موفقعیت فعال شد.",
+        icon: "success",
+        button: "باشه",
+    });
+</script>
+}
+}

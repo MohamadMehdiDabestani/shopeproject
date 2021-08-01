@@ -11,10 +11,12 @@ using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Core;
 
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Role(1)]
     public class ProductController : Controller
     {
         private readonly IProductServices _product;

@@ -1,4 +1,6 @@
 @model CheckoutViewModel
+@using System.Security.Claims
+@inject IUserServices _user;
 @section Header {
 <title>[shope name] - پرداخت</title>
 }
@@ -6,7 +8,9 @@
 <partial name="_NavbarShadow" />
 }
 @{
-    var cart = ViewBag.Cart as List<GetCartViewModel>;
+    var id = int.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+    var cart = await _user.GetCart(id);
+    var wallet = await _user.GetWalletPrice(id);
     var check = cart != null && cart.Count > 0;
     var totalprice = 0;
     if (check)
@@ -42,23 +46,22 @@
         <div class="container">
             @if (check)
             {
-
                 <div class="checkout-f">
                     <div class="row">
                         <div class="col-lg-6">
                             <h1 class="checkout-f__h1">اطلاعات تحویل</h1>
-                            <form class="checkout-f__delivery">
+                            <form class="checkout-f__delivery" method="POST" action="/Account/Checkout">
+                                <input type="hidden" asp-for="TotalCount" value="@cart.Sum(c=> c.Count)"  />
+                                <input type="hidden" asp-for="Price" value="@totalprice" />
                                 <div class="u-s-m-b-30">
 
-
-                                    <!--====== First Name, Last Name ======-->
                                 <div class="gl-inline">
                                         <div class="u-s-m-b-15">
 
                                             <label class="gl-label" for="billing-fname">نام</label>
 
                                             <input class="input-text input-text--primary-style" type="text"
-                                            asp-for="UserName" id="billing-fname" data-bill="" />
+                                            asp-for="UserName" id="billing-fname" />
                                             <span asp-validation-for="UserName" class="error-text"></span>
                                         </div>
                                         <div class="u-s-m-b-15">
@@ -66,18 +69,20 @@
                                             <label class="gl-label" for="billing-lname">نام خانوادگی</label>
 
                                             <input class="input-text input-text--primary-style" type="text"
-                                            id="billing-lname" data-bill="" asp-for="LastName" />
+                                            id="billing-lname" asp-for="LastName" />
                                             <span asp-validation-for="LastName" class="error-text"></span>
                                         </div>
                                     </div>
                                     <div class="u-s-m-b-15">
 
-                                        <label class="gl-label" for="billing-phone">شماره ی همراه</label>
+                                        <label class="gl-label" for="Phone">شماره ی همراه</label>
 
-                                        <input class="input-text input-text--primary-style" type="number" id="billing-phone"
-                                        asp-for="Phone"
-                                        data-bill="" />
-                                        <span asp-validation-for="Phone" class="error-text"></span>
+                                        <input class="input-text input-text--primary-style"
+                                        type="text"
+                                        id="Phone"
+                                        asp-for="PhoneNumber"
+                                        />
+                                        <span asp-validation-for="PhoneNumber" class="error-text"></span>
                                     </div>
                                     <div class="u-s-m-b-15">
                                         <label class="gl-label" for="addres">آدرس</label><textarea
@@ -86,16 +91,18 @@
                                         <span asp-validation-for="Addres" class="error-text"></span>
                                     </div>
                                     <div class="u-s-m-b-15">
-                                        <label class="gl-label" for="codepost">کد پستی</label>
-                                        <input class="input-text input-text--primary-style" 
+                                        <label class="gl-label" for="PostalCode">کد پستی</label>
+                                        <input class="input-text input-text--primary-style"
+                                        type="number"
+                                        id="PostalCode"
                                         asp-for="PostalCode"
-                                        type="number" id="codepost"
-                                        data-bill="" />
+                                        />
                                         <span asp-validation-for="PostalCode" class="error-text"></span>
                                     </div>
                                     <div>
                                         <button class="btn btn--e-transparent-brand-b-2" type="submit">پرداخت</button>
                                     </div>
+                                    <p class="u-s-m-t-20">موجودی حساب :‌ @wallet</p>
                                 </div>
                             </form>
                         </div>
@@ -128,7 +135,6 @@
                                         }
                                     </div>
                                 </div>
-
                                 <div class="o-summary__section u-s-m-b-30">
                                     <div class="o-summary__box">
                                         <table class="o-summary__table">
@@ -145,7 +151,6 @@
                                                     <td>جمع کل</td>
                                                     <td>@((totalprice + 20000).ToString("#,0"))</td>
                                                 </tr>
-
                                             </tbody>
                                         </table>
                                     </div>
@@ -165,3 +170,17 @@
         </div>
     </div>
 </div>
+@if(ViewBag.Error == true && ViewBag.Error != null) {
+    @section Footer {
+<script src="/js/sweetalert.min.js"></script>
+
+<script>
+    swal({
+        title: "مشکلی پیش آمده",
+        text: "موجودی حساب حساب کافی نمی باشد",
+        icon: "error",
+        button: "باشه",
+    });
+</script>
+    }
+}

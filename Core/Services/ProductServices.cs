@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,41 +44,34 @@ namespace Core.Services
             return await _db.ProductPropertiy.FindAsync(id);
         }
 
-        public async Task<Tuple<List<Product> , int>> GetAll(int take, int pageId, bool relation = false, string? title = "", int? groupId = 0, int? maxPrice=0, int? minPrice=0)
+        public async Task<Tuple<List<Product>, int>> GetAll(int take, int pageId, bool relation = false, string? title = "", int? groupId = 0, int? maxPrice = 0, int? minPrice = 0)
         {
-            IQueryable<Product> p = _db.Product;
-            
+            IQueryable<Product> p = _db.Product.Where(p => p.Quantity > 0);
+
             if (!string.IsNullOrEmpty(title))
-            {
                 p = p.Where(p => p.ProductName.Contains(title));
-            }
             if (groupId > 0)
-            {
                 p = p.Where(p => p.GroupId == groupId || p.SubGroupId == groupId);
-            }
             if (maxPrice > 0)
-            {
                 p = p.Where(p => p.Price <= maxPrice);
-            }
-             if (minPrice > 0)
-            {
+            if (minPrice > 0)
                 p = p.Where(p => p.Price >= minPrice);
-            }
             var pagination = _common.Pagination(take, pageId, await p.CountAsync());
             var res = relation ?
             await p.Include(p => p.GroupProduct).Skip(pagination.Item2).Take(pagination.Item1).ToListAsync()
             : await p.Skip(pagination.Item2).Take(pagination.Item1).ToListAsync();
-            return Tuple.Create(res , pagination.Item3);
+            return Tuple.Create(res, pagination.Item3);
         }
 
         public async Task<Product> GetProduct(int id, bool isRelation)
         {
-            return isRelation ? await _db.Product.Include(p => p.GroupProduct)
-            .Include(p=> p.Gallery)
-            .Include(p=> p.SubGroupProduct)
-            .Include(p=> p.Review)
-            .ThenInclude(p=> p.user)
-            .Include(p=> p.ProductPropertyRelation).ThenInclude(p=> p.ProductProperty).SingleOrDefaultAsync(p => p.Id == id) :
+            return isRelation ? await _db.Product
+            .Where(p => p.Quantity > 0).Include(p => p.GroupProduct)
+            .Include(p => p.Gallery)
+            .Include(p => p.SubGroupProduct)
+            .Include(p => p.Review)
+            .ThenInclude(p => p.user)
+            .Include(p => p.ProductPropertyRelation).ThenInclude(p => p.ProductProperty).SingleOrDefaultAsync(p => p.Id == id) :
             await _db.Product.SingleOrDefaultAsync(p => p.Id == id);
         }
 
@@ -174,9 +168,10 @@ namespace Core.Services
             await _db.SaveChangesAsync();
         }
 
-        public async Task AddReview(AddReviewViewModel model , int userId)
+        public async Task AddReview(AddReviewViewModel model, int userId)
         {
-            _db.Reviews.Add(new Reviews(){
+            _db.Reviews.Add(new Reviews()
+            {
                 CreateDate = DateTime.Now,
                 ProductId = model.ProductId,
                 ReviewText = model.Text,
@@ -187,12 +182,54 @@ namespace Core.Services
 
         public async Task<bool> CheckProductInCart(int userId, int productId)
         {
-            return !(await _db.Cart.AnyAsync(c=> c.ProductId == productId && c.UserId == userId));
+            return !(await _db.Cart.AnyAsync(c => c.ProductId == productId && c.UserId == userId));
         }
 
         public async Task<bool> CheckProductInWhishList(int productId, int userId)
         {
-            return !(await _db.WhishList.AnyAsync(w=> w.UserId == userId && productId == w.ProductId));
+            return !(await _db.WhishList.AnyAsync(w => w.UserId == userId && productId == w.ProductId));
+        }
+
+        public async Task<HomeViewModel> GetHome()
+        {
+            IQueryable<Product> p = _db.Product;
+            var res = new HomeViewModel();
+            res.Random = await p.OrderBy(r => Guid.NewGuid()).Take(2)
+            .Include(r => r.GroupProduct)
+            .Select(r => new GetAllProductViewModel()
+            {
+                AltImage = r.AltImage,
+                GroupTitle = r.GroupProduct.GroupTitle,
+                Id = r.Id,
+                ImageName = _common.GetImageUrl(r.ProductImageName, "products"),
+                Name = r.ProductName,
+                Price = r.Price.ToString("#,0"),
+            }).ToListAsync();
+            res.LastProduct = await p.OrderBy(r => r.CreateDate)
+            .Include(r => r.GroupProduct)
+            .Select(r => new GetAllProductViewModel()
+            {
+                AltImage = r.AltImage,
+                GroupTitle = r.GroupProduct.GroupTitle,
+                Id = r.Id,
+                ImageName = _common.GetImageUrl(r.ProductImageName, "products"),
+                Name = r.ProductName,
+                Price = r.Price.ToString("#,0"),
+                Text = r.ProductText,
+            }).ToListAsync();
+            return res;
+        }
+
+        public async Task<List<CarouselItemViewModel>> GetCarousel()
+        {
+            return await _db.Carousel.Select(c => new CarouselItemViewModel()
+            {
+                ImageName = _common.GetImageUrl(c.Image, "carousel"),
+                Link = c.Link,
+                Price = c.Price,
+                Text = c.Text,
+                Title = c.Title,
+            }).ToListAsync();
         }
     }
 }

@@ -49,5 +49,9 @@ namespace Core.Services
         Task<bool> CheckProductInCart(int userId , int productId);
 
         Task<bool> CheckProductInWhishList(int productId , int userId);
+
+        Task<HomeViewModel> GetHome();
+        
+        Task<List<CarouselItemViewModel>> GetCarousel();
     }
 }

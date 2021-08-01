@@ -615,7 +615,7 @@
         }
     };
 
-
+    
 
     // Shop Perspective Change
     RESHOP.shopPerspectiveChange = function() {
@@ -648,7 +648,10 @@
         }
     };
 
-
+    let slides = $(".hero-slide");
+    slides.each(function(index , el) {
+        $(el).css('background-image' , `url(${$(el).attr('data-bg')})`);
+    })
         RESHOP.initScrollUp();
         RESHOP.initTooltip();
         RESHOP.initModal();

@@ -144,6 +144,20 @@ namespace Web.Controllers
             }
             return View(model);
         }
+        [Route("/Home/ChangeEmail")]
+        public async Task<IActionResult> ChangeEmail(string email, string secureCode)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(secureCode))
+                return BadRequest();
+            var user = await _user.GetUserByEmail(email);
+            var check = user.SecureCode == secureCode;
+            if (user == null || !check)
+                return BadRequest();
+            user.SecureCode = RandowString.GetString(150);
+            user.IsActive = true;
+            await _user.Update(user);
+            return Redirect("/Login");
+        }
         [Route("/Logout")]
         [Authorize]
         public async Task<IActionResult> Logout()

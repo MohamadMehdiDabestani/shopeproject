@@ -41,6 +41,7 @@ namespace Web
             services.AddScoped<ICommonServices, CommonServices>();
             services.AddScoped<IPostServices, PostServices>();
             services.AddScoped<IProductServices, ProductServices>();
+            services.AddScoped<IRoleService, RoleServices>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

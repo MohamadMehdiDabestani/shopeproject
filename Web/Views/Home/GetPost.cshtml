@@ -83,8 +83,8 @@
                                                             <span>@item.CreateDate</span></a></span>
                                                     <p class="p-comment__paragraph">@item.Text</p>
 
-                                                    <a class="p-comment__reply" href="#"
-                                                onclick="SubComment(@item.CommentId)">Reply</a>
+                                                    <a class="p-comment__reply" 
+                                                onclick="SubComment(@item.CommentId)">پاسخ</a>
                                                 </div>
                                             </div>
 
@@ -155,9 +155,21 @@
 </div>
 
 
+@section Footer {
+    <script>
+    function SubComment(id) {
+        console.log("clicked for reply comment");
+        $([document.documentElement, document.body]).animate(
+          {
+            scrollTop: $("#comment").offset().top - 200,
+          },
+          2000
+        );
+        $("#ParentId").val(id);
+      }
+</script>
 @if (Context.Request.Query["succes"].ToString() == "true" | Context.Request.Query["error"].ToString() == "true")
 {
-@section Footer {
 <script src="/js/sweetalert.min.js"></script>
 
 @if(Context.Request.Query["succes"].ToString() == "true")
@@ -181,6 +193,5 @@
     });
 </script>
 }
-
 }
 }

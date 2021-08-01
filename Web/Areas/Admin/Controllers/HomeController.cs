@@ -11,11 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Core;
 
 namespace Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-
+    [Role(1)]
     public class HomeController : Controller
     {
         private readonly IAdminServices _admin;
@@ -69,9 +70,9 @@ namespace Web.Areas.Admin.Controllers
 
         #region Post
         [Route("/Admin/Post")]
-        public async Task<ActionResult> Posts(int take, string title,int pageId = 1)
+        public async Task<ActionResult> Posts(int take, string title, int pageId = 1)
         {
-            var res = await _post.GetAllPost(take, pageId, title , false);
+            var res = await _post.GetAllPost(take, pageId, title, false);
             var model = res.Item1.Select(p => new GetAllPostAdminViewModel()
             {
                 ImageName = _common.GetImageUrl(p.ImageName, "post"),
@@ -170,6 +171,55 @@ namespace Web.Areas.Admin.Controllers
             return Redirect("/admin/post");
         }
         #endregion
-
+        [Route("/Admin/Order")]
+        public async Task<IActionResult> GetAllOrders(string completed)
+        {
+            var model = await _admin.GetAllOrders(completed);
+            return View(model);
+        }
+        [HttpPost]
+        [Route("/Admin/UpdateStatusOrder")]
+        public async Task<IActionResult> EditeOrder(EditeOrderViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _admin.UpdateOrder(model);
+                return Redirect("/Admin/Order");
+            }
+            return BadRequest();
+        }
+        [Route("/Admin/Carousel")]
+        public async Task<IActionResult> GetCarousel()
+        {
+            var model = await _admin.GetCarousel();
+            return View(model);
+        }
+        [HttpPost]
+        [Route("/Admin/AddCarousel")]
+        public async Task<IActionResult> AddCarousel(AddCarouselViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!_common.FilterImage(Path.GetExtension(model.Image.FileName)))
+                    return Redirect("/Admin/Carousel?error=true");
+                var carousel = new Carousel()
+                {
+                    Image = await _common.UploadImage(model.Image, "carousel"),
+                    Link = model.Link,
+                    Price = model.Price,
+                    Text = model.Text,
+                    Title = model.Title,
+                };
+                await _admin.AddCarousel(carousel);
+                return Redirect("/Admin/Carousel");
+            }
+            return Redirect("/Admin/Carousel?error=true");
+        }
+        [Route("/Admin/DeleteCarousel/{id}")]
+        public async Task<IActionResult> DeleteCarousel(int id)
+        {
+            await _admin.DeleteCarousel(id);
+            return Redirect("/Admin/Carousel");
+        }
     }
 }

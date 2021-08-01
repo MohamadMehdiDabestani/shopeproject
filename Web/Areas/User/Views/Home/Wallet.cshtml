@@ -1,0 +1,107 @@
+@using System.Security.Claims
+@model ChargeWalletViewModel
+@inject IUserServices user;
+@section Header {
+<title>[shope name] - کیف پول</title>
+}
+@section Nav {
+<partial name="_NavbarShadow" />
+}
+@{
+    var wallet = await user.GetWallet(int.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value));
+}
+<div class="u-s-p-y-60">
+    <div class="section__content">
+        <div class="container">
+            <div class="breadcrumb">
+                <div class="breadcrumb__wrap">
+                    <ul class="breadcrumb__list">
+                        <li class="has-separator">
+                            <a href="/">خانه</a>
+                        </li>
+                        <li class="has-separator">
+                            <a href="/Account">حساب کاربری</a>
+                        </li>
+                        <li class="is-marked">
+                            <a href="/Account/Wallet">کیف پول</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="u-s-p-b-60">
+
+    <!--====== Section Content ======-->
+    <div class="section__content">
+        <div class="dash">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-12">
+                        <partial name="_List" />
+                        <partial name="_History" />
+                    </div>
+                        <div class="col-lg-9 col-md-12">
+                    @if(wallet != null ){
+                        <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                            <div class="dash__pad-2">
+                                <h1 class="dash__h1 u-s-m-b-14">شارژ کیف پول</h1>
+
+                                <span class="dash__text u-s-m-b-30">شما از این طریق می توانید کیف پول خود را شارژ کنید
+                                    (واریز ها فیک می باشند) </span>
+                                <form class="dash-track-order" method="POST" action="/Account/wallet">
+                                <input type="hidden" asp-for="WalletId" value="@wallet.WalletId">
+                                    <div class="gl-inline">
+                                        <div class="u-s-m-b-30">
+                                            <label class="gl-label" for="price">مقدار</label>
+                                            <input class="input-text input-text--primary-style" type="number"
+                                                asp-for="Price"
+                                                id="price" />
+                                                <span asp-validation-for="Price" class="error-text"></span>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn--e-brand-b-2" type="submit">واریز</button>
+                                </form>
+                                <p class="u-s-m-t-20">موجودی : @wallet.Price</p>
+                            </div>
+                        </div>
+                        <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-t-60">
+                            <div class="dash__pad-2">
+                                <h1 class="dash__h1 u-s-m-b-20 u-s-m-t-20">تاریخچه</h1>
+                                @if(wallet.Transaction != null & wallet.Transaction.Count > 0) {
+                                     <table class="wallet">
+                                        <tr>
+                                            <th>تاریخ</th>
+                                            <th>مقدار</th>
+                                            <th>وضعیت</th>
+                                        </tr>
+                                         @foreach (var item in wallet.Transaction)
+                                        {
+                                            <tr>
+                                                <td>@item.CreateDate</td>
+                                                <td>@item.Price.ToString("#,0")</td>
+                                                <td>@((item.Status) ? "موفق" : "نا موفق")</td>
+                                            </tr>
+                                        } 
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div class="alert-error">تراکنشی وجود ندارد</div>
+                                }
+                            </div>
+                        </div>
+                        }else {
+                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-p-t-30 u-s-p-b-30 t-a-c">
+                                <h3 class="u-s-m-b-20">شما کیف پولی ندارید</h3>
+                                <a href="/Account/CreateWallet" class="btn--e-brand shop-now-link">ساخت کیف پول</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====== End - Section Content ======-->
+</div>

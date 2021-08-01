@@ -39,6 +39,7 @@ namespace Web.Controllers
             ViewBag.maxPrice = maxPrice;
             ViewBag.minPrice = minPrice;
             ViewBag.pageId = pageId;
+            ViewBag.title = title;
             return View(Tuple.Create(model, list.Item2));
         }
         [Route("/product/{id}")]

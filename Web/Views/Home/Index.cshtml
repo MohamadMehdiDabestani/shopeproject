@@ -1,83 +1,191 @@
+@inject IProductServices product;
 @{
     ViewData["Title"] = "Index";
+    var items = await product.GetCarousel();
+
 }
+@model HomeViewModel
 @section Slider {
 <!--====== Primary Slider ======-->
 <div class="s-skeleton s-skeleton--h-640 s-skeleton--bg-grey">
     <div class="owl-carousel primary-style-3" id="hero-slider">
-        <div class="hero-slide hero-slide--7">
+        
+        @foreach (var item in items)
+        {
+            <div class="hero-slide hero-slide--9" data-bg="@item.ImageName">
             <div class="primary-style-3-wrap">
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
                             <div class="slider-content slider-content--animation">
-                                <span class="content-span-1 u-c-white">عنوان</span>
+                                <span class="content-span-1 u-c-white">@item.Title</span>
 
-                                <span class="content-span-2 u-c-white">متن 2</span>
-
-                                <span class="content-span-3 u-c-white">متن 3</span>
+                                <span class="content-span-3 u-c-white">@item.Text</span>
 
                                 <span class="content-span-4 u-c-white">شروع از
 
-                                    <span class="u-c-brand">100.000</span></span>
+                                    <span class="u-c-brand">@item.Price</span></span>
 
-                                <a class="shop-now-link btn--e-brand" href="shop-side-version-2.html">همین حالا بخر</a>
+                                <a class="shop-now-link btn--e-brand" href="@item.Link">همین حالا بخر</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="hero-slide hero-slide--8">
-            <div class="primary-style-3-wrap">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="slider-content slider-content--animation">
-                                <span class="content-span-1 u-c-white">عنوان</span>
-
-                                <span class="content-span-2 u-c-white">متن 2</span>
-
-                                <span class="content-span-3 u-c-white">متن 3</span>
-
-                                <span class="content-span-4 u-c-white">شروع از
-
-                                    <span class="u-c-brand">100.000</span></span>
-
-                                <a class="shop-now-link btn--e-brand" href="shop-side-version-2.html">همین حالا بخر</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="hero-slide hero-slide--9">
-            <div class="primary-style-3-wrap">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="slider-content slider-content--animation">
-                                <span class="content-span-1 u-c-white">عنوان</span>
-
-                                <span class="content-span-2 u-c-white">متن 2</span>
-
-                                <span class="content-span-3 u-c-white">متن 3</span>
-
-                                <span class="content-span-4 u-c-white">شروع از
-
-                                    <span class="u-c-brand">100.000</span></span>
-
-                                <a class="shop-now-link btn--e-brand" href="shop-side-version-2.html">همین حالا بخر</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </div>
 }
 @section Nav {
 <partial name="_NavbarGlass" />
 }
-<p>It is Home</p>
+<div class="u-s-p-y-60">
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-6 u-s-m-b-30">
+                                <div class="promotion-o">
+                                    <div class="aspect aspect--bg-grey aspect--square">
+
+                                        <img class="aspect__img image-ob-c" src="images/freestocks-_3Q3tsJ01nc-unsplash.jpg" alt=""></div>
+                                    <div class="promotion-o__content">
+
+                                        <a class="promotion-o__link btn--e-white-brand" href="/product">لباس زنانه</a></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 u-s-m-b-30">
+                                <div class="promotion-o">
+                                    <div class="aspect aspect--bg-grey aspect--square">
+
+                                        <img class="aspect__img image-ob-c" src="images/stil-D4jRahaUaIc-unsplash.jpg" alt=""></div>
+                                    <div class="promotion-o__content">
+
+                                        <a class="promotion-o__link btn--e-white-brand" href="/product">مد و پوشاک</a></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 u-s-m-b-30">
+                                <div class="promotion-o">
+                                    <div class="aspect aspect--bg-grey aspect--square">
+
+                                        <img class="aspect__img image-ob-c" src="images/dami-adebayo-k6aQzmIbR1s-unsplash.jpg" alt=""></div>
+                                    <div class="promotion-o__content">
+
+                                        <a class="promotion-o__link btn--e-white-brand" href="/product">لباس مردانه</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+</div>
+<div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12">
+
+                                    <a class="i3-banner" href="/product">
+                                        <div class="aspect aspect--bg-grey-fb aspect--square">
+
+                                            <img class="aspect__img i3-banner__img image-ob-c" src="images/jaredd-craig-HH4WBGNyltc-unsplash.jpg" alt=""></div>
+                                    </a></div>
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="row">
+                                        @foreach (var item in Model.Random)
+                                        {
+                                            <div class="col-lg-6 col-md-6 col-sm-6 u-s-m-b-30">
+                                            <div class="product-short u-h-100">
+                                                <div class="product-short__container">
+                                                    <div class="product-short__img-wrap">
+
+                                                        <a class="aspect aspect--bg-grey-fb aspect--square u-d-block" href="/product/@item.Id">
+
+                                                            <img class="aspect__img product-short__img" src="@item.ImageName" alt="@item.AltImage"></a></div>
+                                                    <div class="product-short__info">
+
+                                                        <span class="product-short__price">@item.Price</span>
+
+                                                        <span class="product-short__name">
+
+                                                            <a href="/product/@item.Id">@item.Name</a></span>
+
+                                                        <span class="product-short__category">
+
+                                                            <a href="#">@item.GroupTitle</a></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+                                        <div class="col-lg-12">
+
+                                            <a class="i3-banner" href="/product">
+                                                <div class="aspect aspect--bg-grey-fb aspect--1048-334">
+
+                                                    <img class="aspect__img i3-banner__img image-ob-c" src="images/kerde-severin-NVD_32BBZFE-unsplash.jpg" alt=""></div>
+                                            </a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+</div>
+<div class="u-s-p-b-60">
+                <div class="section__intro u-s-m-b-46">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="section__text-wrap">
+                                    <h1 class="section__heading u-c-secondary u-s-m-b-12">جدیدترین محصولات</h1>
+
+                                    <span class="section__span u-c-silver">محصولاتی که به تازگی اضافه شده اند</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Intro ======-->
+
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                         
+                         
+                            @foreach (var item in Model.LastProduct)
+                            {
+                                   <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30">
+                                <div class="product-r u-h-100">
+                                    <div class="product-r__container">
+
+                                        <a class="aspect aspect--bg-grey aspect--square u-d-block" href="/product/@item.Id"><img class="aspect__img" src="@item.ImageName" alt="@item.AltImage"></a>
+                                    </div>
+                                    <div class="product-r__info-wrap">
+
+                                        <span class="product-r__category">
+
+                                            <a href="#">@item.GroupTitle</a></span>
+                                        <div class="product-r__n-p-wrap">
+
+                                            <span class="product-r__name">
+
+                                                <a href="/product/@item.Id">@item.Name</a></span>
+
+                                            <span class="product-r__price">@item.Price</span></div>
+
+                                        <span class="product-r__description">@item.Text</span>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+</div>

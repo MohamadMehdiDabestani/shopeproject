@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using System.IO;
 using System.Security.Claims;
 using System;
@@ -14,6 +15,7 @@ using Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Data.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Web.Areas.Controllers
 {
@@ -24,8 +26,10 @@ namespace Web.Areas.Controllers
         private readonly IUserServices _user;
         private readonly ICommonServices _common;
         private readonly IViewRenderService _render;
-        public HomeController(IUserServices user, ICommonServices common, IViewRenderService render)
+        private readonly IConfiguration _config;
+        public HomeController(IUserServices user, ICommonServices common, IViewRenderService render, IConfiguration config)
         {
+            this._config = config;
             this._render = render;
             this._common = common;
             this._user = user;
@@ -44,7 +48,7 @@ namespace Web.Areas.Controllers
             {
                 Email = user.Email,
                 UserName = user.UserName,
-                Phone = user.PhoneNumber
+                Phone = user.PhoneNumber,
             };
             return View(model);
         }
@@ -74,7 +78,7 @@ namespace Web.Areas.Controllers
                     user.Email = model.Email;
                     var emailModel = new ActiveAccountViewModel
                     {
-                        Url = Url.Action(nameof(ChangeEmail), "Home", new { email = user.Email, secureCode = user.SecureCode }, Request.Scheme),
+                        Url = $"{_config["Url"]}/Home/ChangeEmail?email={user.Email}&secureCode={user.SecureCode}",
                         userName = user.UserName
                     };
                     var body = await _render.RenderToStringAsync("_EmailActiveAccount", emailModel);
@@ -86,18 +90,6 @@ namespace Web.Areas.Controllers
                 return Redirect("/Login");
             }
             return View(model);
-        }
-        public async Task<IActionResult> ChangeEmail(string email, string secureCode)
-        {
-            if (!string.IsNullOrEmpty(email) || !string.IsNullOrEmpty(secureCode))
-                return BadRequest();
-            var user = await _user.GetUserByEmail(email);
-            var check = user.SecureCode == secureCode;
-            if (user == null || !check)
-                return BadRequest();
-            user.SecureCode = RandowString.GetString(150);
-            user.IsActive = true;
-            return Redirect("/Login");
         }
         [Route("/Account/ResetPassword")]
         public IActionResult ResetPassword()
@@ -113,7 +105,7 @@ namespace Web.Areas.Controllers
                 var user = await _user.GetUserById(int.Parse(User.Claims.First(u => u.Type == ClaimTypes.NameIdentifier).Value));
                 if (user == null)
                     return NotFound();
-                var check = user.Password == model.CurrectPassword;
+                var check = user.Password == PasswordHelper.EncodePasswordMd5(model.CurrectPassword);
                 if (!check)
                 {
                     ViewBag.Error = "رمز عبور فعلی اشتباه می باشد";
@@ -194,11 +186,89 @@ namespace Web.Areas.Controllers
         }
         [HttpGet]
         [Route("/Account/Checkout")]
-        public async Task<IActionResult> Checkout()
+        public IActionResult Checkout()
         {
-            ViewBag.Cart = await _user.GetCart(int.Parse(User.Claims.First(c=> c.Type == ClaimTypes.NameIdentifier).Value));
             return View();
         }
 
+        [Route("/Account/Checkout")]
+        [HttpPost]
+        public async Task<IActionResult> Checkout(CheckoutViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Price += 20000;
+                int userId = int.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+                var walletprice = await _user.GetWalletPrice(userId);
+                if (walletprice >= model.Price)
+                {
+                    var products = await _user.GetProductsOfCart(userId);
+                    var factor = new Factor()
+                    {
+                        Count = model.TotalCount,
+                        Addres = model.Addres,
+                        CreateDate = DateTime.Now,
+                        LastName = model.LastName,
+                        Phone = model.PhoneNumber,
+                        PostalCode = model.PostalCode,
+                        UserId = userId,
+                        Status = "PROCESSING",
+                        Price = model.Price,
+                        UserName = model.UserName,
+                        products = products
+                    };
+                    products.ForEach(p => p.Quantity -= model.TotalCount);
+                    await _user.AddFactor(factor, products);
+                    return Redirect("/Account/Order");
+                }
+                ViewBag.Error = true;
+                return View(model);
+            }
+            return View(model);
+        }
+        [Route("/Account/Wallet")]
+        public async Task<IActionResult> Wallet()
+        {
+            return View();
+        }
+
+        [Route("/Account/Wallet")]
+        [HttpPost]
+        public async Task<IActionResult> Wallet(ChargeWalletViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var transaction = new Transaction
+                {
+                    CreateDate = DateTime.Now,
+                    Status = true,
+                    Price = model.Price,
+                    WalletId = model.WalletId
+                };
+                await _user.ChargeWallet(transaction);
+                return Redirect("/Account/Wallet");
+            }
+            return View(model);
+        }
+        [Route("/Account/CreateWallet")]
+        public async Task<IActionResult> CreateWallet()
+        {
+            await _user.CreateWallet(int.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value));
+            return Redirect("/Account/Wallet");
+        }
+        [Route("/Account/Order")]
+        public async Task<IActionResult> Order()
+        {
+            var model = await _user.GetAllOrder(int.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value));
+            return View(model);
+        }
+        [Route("/Account/Order/Details/{id}")]
+        public async Task<IActionResult> OrderDetails(int id)
+        {
+            var model = await _user.GetOrder(id);
+            if (model == null)
+                return NotFound();
+            return View(model);
+        }
     }
 }

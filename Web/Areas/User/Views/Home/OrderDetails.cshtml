@@ -1,0 +1,139 @@
+@model GetOrderDetailsViewModel;
+@section Header {
+<title>[shope name] - مشخصات خرید</title>
+}
+
+<div class="u-s-p-y-60">
+    <div class="section__content">
+        <div class="container">
+            <div class="breadcrumb">
+                <div class="breadcrumb__wrap">
+                    <ul class="breadcrumb__list">
+                        <li class="has-separator">
+
+                            <a href="/">خانه</a>
+                        </li>
+                           <li class="has-separator">
+
+                            <a href="/account">حساب کاربری</a>
+                        </li>
+                        <li class="is-marked">
+                            <a href="/account/order/details/@Model.Id">فاکتور شماره ی 1</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="u-s-p-b-60">
+    <div class="section__content">
+        <div class="dash">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-12">
+                        <partial name="_List" />
+                        <partial name="_History" />
+                    </div>
+                    <div class="col-lg-9 col-md-12">
+                        <h1 class="dash__h1 u-s-m-b-30">مشخصات خرید</h1>
+                        <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                            <div class="dash__pad-2">
+                                <div class="dash-l-r">
+                                    <div>
+                                        <div class="manage-o__text-2 u-c-secondary">خرید شماره ی #@Model.Id</div>
+                                        <div class="manage-o__text u-c-silver">ایجاد شده در تاریخ : @Model.CreateDate</div>
+                                    </div>
+                                    <div>
+                                        <div class="manage-o__text-2 u-c-silver">جمع کل:
+                                            <span class="manage-o__text-2 u-c-secondary">@Model.Price ت</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                            <div class="dash__pad-2">
+                                <div class="manage-o">
+                                    <div class="manage-o__timeline">
+                                        <div class="timeline-row">
+                                            <div class="col-lg-4 u-s-m-b-30">
+                                                <div class="timeline-step">
+                                                    <div class="timeline-l-i timeline-l-i--finish">
+                                                        <span class="timeline-circle"></span>
+                                                    </div>
+                                                    <span class="timeline-text">در حال پردازش</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 u-s-m-b-30">
+                                                <div class="timeline-step">
+                                                    <div class='timeline-l-i @(Model.Status =="SHIPPED" || @Model.Status == "DELIVERED" ? "timeline-l-i--finish" : "")'>
+                                                        <span class="timeline-circle"></span>
+                                                    </div>
+                                                    <span class="timeline-text">در حال ارسال</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 u-s-m-b-30">
+                                                <div class="timeline-step">
+                                                    <div class='timeline-l-i @(Model.Status == "DELIVERED" ? "timeline-l-i--finish" : "")'>
+                                                        <span class='timeline-circle'></span>
+                                                    </div>
+                                                    <span class="timeline-text">تحویل داده شد</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @foreach (var item in Model.Products)
+                                    {
+                                        <div class="manage-o__description u-s-m-t-25">
+                                        <div class="description__container">
+                                            <div class="description__img-wrap">
+                                                <img class="u-img-fluid" src="@item.ImageName"
+                                                    alt="@item.AltImage">
+                                            </div>
+                                            <div class="description-title">@item.Name</div>
+                                        </div>
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+                                    <div class="dash__pad-3">
+                                        <h2 class="dash__h2 u-s-m-b-8">مشخصات فاکتور</h2>
+                                        <h2 class="dash__h2 u-s-m-b-8">دریافت کننده :‌ @Model.UserName @Model.LastName</h2>
+                                        <span class="dash__text-2">آدرس :‌ @Model.Addres</span>
+                                        <span class="dash__text-2">تلفن همراه : @Model.PhoneNumber</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="dash__box dash__box--bg-white dash__box--shadow u-h-100">
+                                    <div class="dash__pad-3">
+                                        <h2 class="dash__h2 u-s-m-b-8">اطلاعات خرید</h2>
+                                        <div class="dash-l-r u-s-m-b-8">
+                                            <div class="manage-o__text-2 u-c-secondary">کالاها</div>
+                                            <div class="manage-o__text-2 u-c-secondary">@(Model.Price - 20000) ت</div>
+                                        </div>
+                                        <div class="dash-l-r u-s-m-b-8">
+                                            <div class="manage-o__text-2 u-c-secondary">حمل و نقل</div>
+                                            <div class="manage-o__text-2 u-c-secondary">20000 ت</div>
+                                        </div>
+                                        <div class="dash-l-r u-s-m-b-8">
+                                            <div class="manage-o__text-2 u-c-secondary">جمع کل</div>
+                                            <div class="manage-o__text-2 u-c-secondary">@Model.Price ت</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====== End - Section Content ======-->
+</div>
+<!--====== End - Section 2 ======-->

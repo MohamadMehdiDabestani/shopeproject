@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
@@ -81,8 +83,11 @@ namespace Core.ViewModels
         [MaxLength(250)]
         public string Email { get; set; }
 
-        [Range(1, 11, ErrorMessage = "شماره صحیح نیست")]
-        public int Phone { get; set; }
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [Display(Name = "شماره ی همراه")]
+        [StringLength(11 , ErrorMessage ="شماره معتبر نیست 1"),RegularExpression(@"^[0-9]{11}$" , ErrorMessage ="شماره معتبر نیست 2")]
+        [DataType(DataType.PhoneNumber)]
+        public string Phone { get; set; }
 
         public IFormFile Image { get; set; }
     }
@@ -138,15 +143,18 @@ namespace Core.ViewModels
         public int ProductId { get; set; }
 
         public bool InCart { get; set; }
-        
-        
+
+
     }
     public class UpdateCartViewModel
     {
         public int Count { get; set; }
         public int Id { get; set; }
     }
-    public class CheckoutViewModel {
+    public class CheckoutViewModel
+    {
+        [Required]
+        public int Price { get; set; }
 
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [Display(Name = "نام")]
@@ -160,19 +168,94 @@ namespace Core.ViewModels
 
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [Display(Name = "شماره ی همراه")]
-        [MaxLength(200)]
-        [Range(1, 11, ErrorMessage = "{0} معتبر نیست")]
-        public int Phone { get; set; }
-        
+        [StringLength(11 , ErrorMessage ="شماره معتبر نیست 1"),RegularExpression(@"^[0-9]{11}$" , ErrorMessage ="شماره معتبر نیست 2")]
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [Display(Name = "آدرس")]
         [MaxLength(600)]
         public string Addres { get; set; }
-        
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [Display(Name = "پستال کد")]
-        [MaxLength(10)]
-        [Range(1, 10, ErrorMessage = "{0} معتبر نیست")]
+
+        // [Display(Name = "کد پستی")]
+        // [Range(1, 10, ErrorMessage = "{0} معتبر نیست")]
         public int PostalCode { get; set; }
+
+        public int TotalCount { get; set; }
+    }
+    public class GetWalletViewModel
+    {
+        public GetWalletViewModel()
+        {
+            Transaction = new List<GetTransaction>();
+        }
+        public int Price { get; set; }
+        
+        public int WalletId { get; set; }
+        
+        public List<GetTransaction> Transaction { get; set; }
+    }
+    public class GetTransaction
+    {
+        public bool Status { get; set; }
+
+        public int Price { get; set; }
+
+        public string CreateDate { get; set; }
+    }
+    public class ChargeWalletViewModel
+    {
+        [Required]
+        public int WalletId { get; set; }
+        
+        
+        [Display(Name = "مقدار")]
+        [Required]
+        public int Price { get; set; }
+    }
+    public class GetOrderViewModel 
+    {
+        public string price { get; set; }
+        public int Id { get; set; }
+        public string CreateDate { get; set; }
+    }
+    public class GetOrderDetailsViewModel 
+    {
+        public GetOrderDetailsViewModel()
+        {
+            Products = new List<GetProductForOrderViewModel>();
+        }
+
+        public string LastName { get; set; }
+        
+        public int Id { get; set; }
+        
+        public string UserName { get; set; }
+        
+        public string PhoneNumber { get; set; }
+        
+        public string Addres { get; set; }
+        
+        public int Price { get; set; }
+        
+        public string Status { get; set; }
+        
+        public string CreateDate { get; set; }
+        
+        public List<GetProductForOrderViewModel> Products { get; set; }
+    }
+    public class GetProductForOrderViewModel 
+    {
+        public string Name { get; set; }
+        
+        public string ImageName { get; set; }
+        
+        public string AltImage { get; set; }
+    }
+    public class GetHistoryViewModel {
+        public int WishList { get; set; }
+        
+        public int Bought { get; set; }
+        
     }
 }

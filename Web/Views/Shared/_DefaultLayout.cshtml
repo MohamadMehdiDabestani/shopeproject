@@ -5,21 +5,11 @@
     <meta charset="UTF-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <link href="/images/favicon.png" rel="shortcut icon">
     @RenderSection("Header" , false)
-
-    <!--====== Google Font ======-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
-
-    <!--====== Vendor Css ======-->
     <link rel="stylesheet" href="/css/vendor.css">
-
-    <!--====== Utility-Spacing ======-->
     <link rel="stylesheet" href="/css/utility.css">
-
-    <!--====== App ======-->
     <link rel="stylesheet" href="/css/app.css">
 </head>
 
@@ -31,21 +21,11 @@
     </div>
 
     <div id="app">
-
         @RenderSection("Nav" , false)
-
-
-        <!--====== App Content ======-->
         <div class="app-content">
-
             @RenderSection("Slider" , false)
-
             @RenderBody()
         </div>
-        <!--====== End - App Content ======-->
-
-
-        <!--====== Main Footer ======-->
         <footer>
             <div class="outer-footer">
                 <div class="container">
@@ -182,37 +162,12 @@
                 </div>
             </div>
         </footer>
-
-        
     </div>
-    <!--====== End - Main App ======-->
-
-
-    <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
-    <script>
-        window.ga = function () {
-            ga.q.push(arguments)
-        };
-        ga.q = [];
-        ga.l = +new Date;
-        ga('create', 'UA-XXXXX-Y', 'auto');
-        ga('send', 'pageview')
-    </script>
-    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
-
-    <!--====== Vendor Js ======-->
     <script src="/js/vendor.js"></script>
 
-    <!--====== jQuery Shopnav plugin ======-->
     <script src="/js/jquery.shopnav.js"></script>
-
-    <!--====== App ======-->
     <script src="/js/app.js"></script>
-    <script src="/js/script.js"></script>
     @RenderSection("Footer" , false)
-
-
-    <!--====== Noscript ======-->
     <noscript>
         <div class="app-setting">
             <div class="container">

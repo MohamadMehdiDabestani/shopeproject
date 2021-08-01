@@ -29,9 +29,12 @@ namespace Data.Models
         [Required(ErrorMessage = "Please Enter {0} .")]
         [MaxLength(150)]
         public string SecureCode { get; set; }
-        
-        [Range(1,11 , ErrorMessage ="شماره صحیح نیست")]
-        public int PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [Display(Name = "شماره ی همراه")]
+        [StringLength(11 , ErrorMessage ="شماره معتبر نیست 1"),RegularExpression(@"^[0-9]{11}$" , ErrorMessage ="شماره معتبر نیست 2")]
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -41,14 +44,14 @@ namespace Data.Models
         public string UserAvatar { get; set; }
 
         public int? RoleId { get; set; }
-        
+
         [ForeignKey("RoleId")]
         public Role Role { get; set; }
 
-        public List<Post> Post { get; set; }
-
         public List<Comment> comment { get; set; }
-        
+
         public List<Factor> Factor { get; set; }
+
+        public List<WhishList> WishList { get; set; }
     }
 }
