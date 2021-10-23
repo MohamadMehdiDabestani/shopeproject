@@ -41,6 +41,13 @@
                     {
                         <a class="gl-tag btn--e-transparent-hover-brand-b-2" href="blog-right-sidebar.html">@item</a>
                     }
+                    @if(User.Identity.IsAuthenticated)
+            {
+                if(User.Claims.SingleOrDefault(u => u.Type == "Type").Value == "Admin")
+                {
+                    <a href="/Admin/EditePost/@Model.PostId" class="btn-warning">ویرایش</a>
+                }
+            }
                 </div>
                 <p class="bp-detail__p">
                     @Model.Text

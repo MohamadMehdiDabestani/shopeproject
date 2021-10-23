@@ -23,6 +23,12 @@ namespace Core.ViewModels
         [Display(Name = "رمز عبور")]
         [MaxLength(256)]
         public string Password { get; set; }
+        //[Required(ErrorMessage =)]
+        //[RegularExpression("([0-9]+)" , ErrorMessage = "شماره ی معتبر وارد کنید")]
+        //// 09135377502
+        //// [StringLength(MinimumLength=11 , ErrorMessage = "شماره ی معتبر وارد کنید")]
+        //[StringLength(13, MinimumLength = 13, ErrorMessage = "شماره ی معتبر وارد کنید")]
+        //public long Number { get; set; }
     }
     public class LoginViewModel
     {
@@ -168,7 +174,7 @@ namespace Core.ViewModels
 
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [Display(Name = "شماره ی همراه")]
-        [StringLength(11 , ErrorMessage ="شماره معتبر نیست 1"),RegularExpression(@"^[0-9]{11}$" , ErrorMessage ="شماره معتبر نیست 2")]
+        [StringLength(11 , ErrorMessage ="شماره معتبر نیست"),RegularExpression(@"^[0-9]{11}$" , ErrorMessage ="شماره معتبر نیست ")]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
@@ -177,9 +183,9 @@ namespace Core.ViewModels
         [MaxLength(600)]
         public string Addres { get; set; }
 
-        // [Display(Name = "کد پستی")]
-        // [Range(1, 10, ErrorMessage = "{0} معتبر نیست")]
-        public int PostalCode { get; set; }
+        [Display(Name = "پستال کد")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public string PostalCode { get; set; }
 
         public int TotalCount { get; set; }
     }

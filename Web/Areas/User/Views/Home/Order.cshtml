@@ -1,6 +1,9 @@
 @model List<GetOrderViewModel>
 @section Header {
-<title>[shope name] - سفارشات</title>
+    <title>[shope name] - سفارشات</title>
+}
+@section Nav {
+    <partial name="_NavbarShadow" />
 }
 <div class="u-s-p-y-60">
     <div class="section__content">
@@ -37,8 +40,10 @@
                             <div class="dash__pad-2">
                                 <h1 class="dash__h1 u-s-m-b-14">خرید های من</h1>
 
-                                <span class="dash__text u-s-m-b-30">در اینجا شما میتوانید تمامی سفارشات خود را بررسی
-                                    کنید</span>
+                                <span class="dash__text u-s-m-b-30">
+                                    در اینجا شما میتوانید تمامی سفارشات خود را بررسی
+                                    کنید
+                                </span>
 
                                 @if (Model != null && Model.Count > 0)
                                 {
@@ -49,9 +54,11 @@
                                                 <div>
                                                     <div class="dash-l-r">
                                                         <div>
-                                                            <div class="manage-o__text-2 u-c-secondary">تاریخ ایجاد :‌ @item.CreateDate
+                                                            <div class="manage-o__text-2 u-c-secondary">
+                                                                تاریخ ایجاد :‌ @item.CreateDate
                                                             </div>
-                                                            <div class="manage-o__text u-c-silver u-s-m-t-15">جمع قیمت : @item.price
+                                                            <div class="manage-o__text u-c-silver u-s-m-t-15">
+                                                                جمع قیمت : @item.price
                                                             </div>
                                                         </div>
                                                         <div>

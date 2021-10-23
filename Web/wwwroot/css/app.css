@@ -50,6 +50,22 @@ custom-colors, box-mode, custom-header, custom-menu, custom-logo, featured-image
 /**
  * Setup box-sizing
  */
+.img-slider {
+    max-height: 450px;
+    min-height: 450px;
+    object-fit: cover;
+}
+.btn-warning {
+    background: #ffc212;
+    border: none;
+    border-radius: 5 px;
+    padding: 0 20 px;
+    flex: auto;
+    margin: 0 px 0;
+    text-align: center;
+    line-height: 40px;
+    color: black;
+}
 .t-a-c {
   text-align: center;
 }
@@ -3182,8 +3198,11 @@ input::-ms-clear {
     height: 60px;
     background-color: #f5f5f5; }
     .o-card__img-wrap img {
-      display: block;
-      min-width: 60px; }
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        min-width: 60px;
+    }
   .o-card__info-wrap {
     margin-right: 18px; }
   .o-card__name {
@@ -3607,12 +3626,14 @@ input::-ms-clear {
   display: inline-block;
   vertical-align: middle;
   background: #f5f5f5; }
-  .description__img-wrap img {
-    border-radius: 50%;
-    display: block;
-    min-width: 90px; 
-    width: 100%;
-  }
+    .description__img-wrap img {
+        border-radius: 50%;
+        display: block;
+        min-width: 90px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;  
+    }
 
 .description-title {
   margin-right: 12px;

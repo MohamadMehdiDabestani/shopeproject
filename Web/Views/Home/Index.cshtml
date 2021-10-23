@@ -2,7 +2,9 @@
 @{
     ViewData["Title"] = "Index";
     var items = await product.GetCarousel();
-
+}
+@section Header {
+    <title>Welcome to my shop</title>
 }
 @model HomeViewModel
 @section Slider {

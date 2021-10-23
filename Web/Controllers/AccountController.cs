@@ -53,7 +53,8 @@ namespace Web.Controllers
                     RegisterDate = DateTime.Now,
                     UserAvatar = "user.jpg",
                     SecureCode = RandowString.GetString(150),
-                    Password = PasswordHelper.EncodePasswordMd5(model.Password)
+                    Password = PasswordHelper.EncodePasswordMd5(model.Password),
+                    PhoneNumber = "0"
                 };
                 await _user.AddUser(user);
                 var emailModel = new ActiveAccountViewModel
@@ -119,7 +120,8 @@ namespace Web.Controllers
                 var claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                        new Claim(ClaimTypes.Name,user.UserName)
+                        new Claim(ClaimTypes.Name,user.UserName),
+                        new Claim("Type" , user.RoleId == 1 ? "Admin" : "User")
                     };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);

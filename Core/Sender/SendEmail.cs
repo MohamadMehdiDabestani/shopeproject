@@ -20,7 +20,7 @@ namespace Core
             // mail.Attachments.Add(attachment);
 
             SmtpServer.Port = 587;
-            SmtpServer.Credentials = new NetworkCredential("mohamad1382mhd@gmail.com", "09135377502");
+            SmtpServer.Credentials = new NetworkCredential("mohamad1382mhd@gmail.com", "Mohamad1382@123");
             SmtpServer.EnableSsl = true;
             SmtpServer.UseDefaultCredentials = false;
             SmtpServer.Send(mail);

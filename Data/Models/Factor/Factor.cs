@@ -33,8 +33,7 @@ namespace Data.Models
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [Display(Name = "پستال کد")]
         [MaxLength(10)]
-        // [Range(1, 10, ErrorMessage = "{0} معتبر نیست")]
-        public int PostalCode { get; set; }
+        public string PostalCode { get; set; }
 
         public int Price { get; set; }
 

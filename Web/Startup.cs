@@ -29,7 +29,6 @@ namespace Web
 
             services.AddControllers();
             services.AddMvc();
-            services.AddRazorPages();
             services.AddDbContext<ShopeDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("ShopeDbConnection"));
@@ -63,10 +62,12 @@ namespace Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthentication();
