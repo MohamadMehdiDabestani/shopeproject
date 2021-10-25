@@ -552,6 +552,18 @@ namespace Data.Migrations
                     b.ToTable("WhishList");
                 });
 
+            modelBuilder.Entity("Data.TestConnection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Testing");
+                });
+
             modelBuilder.Entity("FactorProduct", b =>
                 {
                     b.Property<int>("FactorId")

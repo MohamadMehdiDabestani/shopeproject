@@ -1,18 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Core.Services;
 using Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Web
 {
@@ -29,9 +25,10 @@ namespace Web
 
             services.AddControllers();
             services.AddMvc();
+            var test = Configuration.GetConnectionString("ShopeDbConnection");
             services.AddDbContext<ShopeDbContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("ShopeDbConnection"));
+                opt.UseSqlServer(test);
             });
 
             services.AddScoped<IViewRenderService, ViewRenderService>();
