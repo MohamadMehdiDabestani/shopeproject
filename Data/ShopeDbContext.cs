@@ -1,3 +1,6 @@
+using System;
+using System.Security.Cryptography;
+using System.Text;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,25 +27,27 @@ namespace Data
 
         public DbSet<Post> Post { get; set; }
 
-        
+
         public DbSet<Reviews> Reviews { get; set; }
 
         public DbSet<Gallery> Gallery { get; set; }
-        
+
         public DbSet<Cart> Cart { get; set; }
-        
+
         public DbSet<WhishList> WhishList { get; set; }
-        
+
         public DbSet<Factor> Factor { get; set; }
 
         public DbSet<Wallet> Wallet { get; set; }
-        
+
         public DbSet<Transaction> Transaction { get; set; }
-        
+
         public DbSet<Carousel> Carousel { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
         }
+        
     }
+
 }

@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(ShopeDbContext))]
-    partial class ShopeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211026125036_seed")]
+    partial class seed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -430,13 +432,6 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            RoleTitle = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Data.Models.Transaction", b =>
@@ -515,21 +510,6 @@ namespace Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("User");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "Admin@gmail.com",
-                            IsActive = true,
-                            Password = "25-F9-E7-94-32-3B-45-38-85-F5-18-1F-1B-62-4D-0B",
-                            PhoneNumber = "",
-                            RegisterDate = new DateTime(2021, 10, 26, 5, 58, 59, 915, DateTimeKind.Local).AddTicks(3516),
-                            RoleId = 1,
-                            SecureCode = "ADU@kadkg45646@54asd@@!!",
-                            UserAvatar = "user.jpg",
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Data.Models.Wallet", b =>

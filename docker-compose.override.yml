@@ -14,7 +14,7 @@ services:
   web:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ShopeDbConnection:Server=localhost;Database=Shope;MultipleActiveResultSets=true;User Id=SA;Password=yourStrongPassword@123"
+      - dbserver:"shopedb"
     restart: always
     ports:
       - "8001:80"

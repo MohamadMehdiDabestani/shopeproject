@@ -25,12 +25,19 @@ namespace Web
 
             services.AddControllers();
             services.AddMvc();
-            var test = Configuration.GetConnectionString("ShopeDbConnection");
-            services.AddDbContext<ShopeDbContext>(opt =>
+            // var database = Configuration["database"] ?? "Shope";
+            // var port = Configuration["dbport"] ?? "8080";
+            // var user = Configuration["dbuser"] ?? "SA";
+            // var password = Configuration["dbpassword"] ?? "yourStrongPassword@123";
+            // var server = Configuration["dbserver"] ?? "shopedb";
+            // services.AddDbContext<ShopeDbContext>(opt =>
+            // {
+            //     opt.UseSqlServer($"Server={server},{port};Initial Catalog={database};User Id={user};Password={password}");
+            // });
+             services.AddDbContext<ShopeDbContext>(opt =>
             {
-                opt.UseSqlServer(test);
+                opt.UseSqlServer($"Data Source=.;initial catalog=Shope;integrated security=true");
             });
-
             services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<IAdminServices, AdminServices>();
             services.AddScoped<IUserServices, UserServices>();
