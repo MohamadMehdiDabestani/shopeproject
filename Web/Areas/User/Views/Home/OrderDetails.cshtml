@@ -1,8 +1,10 @@
 @model GetOrderDetailsViewModel;
 @section Header {
-<title>[shope name] - مشخصات خرید</title>
+    <title>[shope name] - مشخصات خرید</title>
 }
-
+@section Nav {
+    <partial name="_NavbarShadow" />
+}
 <div class="u-s-p-y-60">
     <div class="section__content">
         <div class="container">
@@ -13,7 +15,7 @@
 
                             <a href="/">خانه</a>
                         </li>
-                           <li class="has-separator">
+                        <li class="has-separator">
 
                             <a href="/account">حساب کاربری</a>
                         </li>
@@ -45,7 +47,8 @@
                                         <div class="manage-o__text u-c-silver">ایجاد شده در تاریخ : @Model.CreateDate</div>
                                     </div>
                                     <div>
-                                        <div class="manage-o__text-2 u-c-silver">جمع کل:
+                                        <div class="manage-o__text-2 u-c-silver">
+                                            جمع کل:
                                             <span class="manage-o__text-2 u-c-secondary">@Model.Price ت</span>
                                         </div>
                                     </div>
@@ -86,14 +89,14 @@
                                     @foreach (var item in Model.Products)
                                     {
                                         <div class="manage-o__description u-s-m-t-25">
-                                        <div class="description__container">
-                                            <div class="description__img-wrap">
-                                                <img class="u-img-fluid" src="@item.ImageName"
-                                                    alt="@item.AltImage">
+                                            <div class="description__container">
+                                                <div class="description__img-wrap">
+                                                    <img class="u-img-fluid" src="@item.ImageName"
+                                                         alt="@item.AltImage">
+                                                </div>
+                                                <div class="description-title">@item.Name</div>
                                             </div>
-                                            <div class="description-title">@item.Name</div>
                                         </div>
-                                    </div>
                                     }
                                 </div>
                             </div>

@@ -10,6 +10,8 @@ using Core.ViewModels;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers
 {
@@ -33,7 +35,7 @@ namespace Web.Controllers
         [Route("/Post")]
         public async Task<IActionResult> GetAll(int pageId = 1, string title = "")
         {
-            var post = await _post.GetAllPost(12, pageId, title, true);
+            var post = await _post.GetAllPost(1, pageId, title, true);
             var model = post.Item1.Select(p => new GetAllPostViewModel
             {
                 AltImage = p.AltImage,
@@ -41,7 +43,7 @@ namespace Web.Controllers
                 ImageName = _common.GetImageUrl(p.ImageName, "post"),
                 PostTitle = p.PostTitle,
                 PostId = p.Id,
-                CreateDate = p.CreateDate.ToString("dd/MMM/yyyy"),
+                CreateDate = p.CreateDate.ToShamsi(),
                 CommentCount = p.comment.Count,
             }).ToList();
             ViewBag.title = title;
@@ -57,7 +59,7 @@ namespace Web.Controllers
                 return NotFound();
             var model = new GetPostViewModel
             {
-                CreateDate = post.CreateDate.ToString("dd-MM-yyyy"),
+                CreateDate = post.CreateDate.ToShamsi(),
                 ImageName = _common.GetImageUrl(post.ImageName, "post"),
                 Tags = post.Tags,
                 Text = post.Text,
@@ -69,7 +71,7 @@ namespace Web.Controllers
                 {
                     Avatar = _common.GetImageUrl(c.user.UserAvatar, "user"),
                     CommentId = c.Id,
-                    CreateDate = c.CreateDate.ToString("dd-MM-yyyy"),
+                    CreateDate = c.CreateDate.ToShamsi(),
                     ParentId = c.ParentId,
                     Text = c.Text,
                     UserName = c.user.UserName
@@ -80,6 +82,7 @@ namespace Web.Controllers
         }
         [HttpPost]
         [Route("/Post/AddComment")]
+        [Authorize]
         public async Task<IActionResult> AddComment(AddCommentViewModel model)
         {
             if (ModelState.IsValid)

@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{9D867639-FD0B-4DE0-B310-598C8FCB3693}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{831222A4-006A-427D-94B7-E973529ECA83}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,18 +55,6 @@ Global
 		{9D867639-FD0B-4DE0-B310-598C8FCB3693}.Release|x64.Build.0 = Release|Any CPU
 		{9D867639-FD0B-4DE0-B310-598C8FCB3693}.Release|x86.ActiveCfg = Release|Any CPU
 		{9D867639-FD0B-4DE0-B310-598C8FCB3693}.Release|x86.Build.0 = Release|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Debug|x64.Build.0 = Debug|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Debug|x86.Build.0 = Debug|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Release|Any CPU.Build.0 = Release|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Release|x64.ActiveCfg = Release|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Release|x64.Build.0 = Release|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Release|x86.ActiveCfg = Release|Any CPU
-		{831222A4-006A-427D-94B7-E973529ECA83}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

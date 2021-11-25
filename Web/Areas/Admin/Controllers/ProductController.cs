@@ -123,7 +123,7 @@ namespace Web.Areas.Admin.Controllers
             {
                 var product = await _product.GetProduct(model.ProductId, false);
                 if (product == null)
-                    return null;
+                    return NotFound();
                 if (model.Image != null)
                 {
                     if (!_common.FilterImage(Path.GetExtension(model.Image.FileName)))
@@ -132,6 +132,7 @@ namespace Web.Areas.Admin.Controllers
                         return View(model);
                     }
                     _common.DeleteImage(product.ProductImageName, "products");
+                    product.ProductImageName =await _common.UploadImage(model.Image, "products");
                 }
                 product.AltImage = model.AltImage;
                 product.Price = model.Price;

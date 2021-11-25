@@ -9,6 +9,7 @@ using Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers
 {
@@ -24,7 +25,7 @@ namespace Web.Controllers
         [Route("/product")]
         public async Task<IActionResult> GetAll(int pageId = 1, string title = "", int groupId = 0, int maxPrice = 0, int minPrice = 0)
         {
-            var list = await _product.GetAll(12, pageId, true, title, groupId, maxPrice, minPrice);
+            var list = await _product.GetAll(3, pageId, true, title, groupId, maxPrice, minPrice);
             var model = list.Item1.Select(p => new GetAllProductViewModel()
             {
                 Id = p.Id,
@@ -86,6 +87,7 @@ namespace Web.Controllers
         }
         [Route("/product/{id}")]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> GetProduct(AddReviewViewModel model)
         {
             if(ModelState.IsValid)

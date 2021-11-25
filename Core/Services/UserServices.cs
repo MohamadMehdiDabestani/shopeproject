@@ -67,7 +67,7 @@ namespace Core.Services
         {
             await _db.AddAsync(transaction);
             var wallet = await _db.Wallet.FindAsync(transaction.WalletId);
-            wallet.Price = +transaction.Price;
+            wallet.Price += transaction.Price;
             _db.Update(wallet);
             await _db.SaveChangesAsync();
         }

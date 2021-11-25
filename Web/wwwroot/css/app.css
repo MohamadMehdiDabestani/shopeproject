@@ -50,6 +50,9 @@ custom-colors, box-mode, custom-header, custom-menu, custom-logo, featured-image
 /**
  * Setup box-sizing
  */
+img {
+    object-fit: cover !important;
+}
 .img-slider {
     max-height: 450px;
     min-height: 450px;

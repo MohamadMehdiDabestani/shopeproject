@@ -207,6 +207,7 @@ namespace Core.Services
             }).ToListAsync();
             res.LastProduct = await p.OrderBy(r => r.CreateDate)
             .Include(r => r.GroupProduct)
+            .Take(4)
             .Select(r => new GetAllProductViewModel()
             {
                 AltImage = r.AltImage,

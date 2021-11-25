@@ -27,7 +27,7 @@
                         @if (product.SubGroupTitle != null)
                         {
                             <li class="has-separator">
-                                <a href="/produc?groupId=@product.SunGroupId">@product.SubGroupTitle</a>
+                                <a href="/product?groupId=@product.SunGroupId">@product.SubGroupTitle</a>
                             </li>
                         }
                     </ul>
@@ -77,6 +77,11 @@
                     <div>
 
                         <span class="pd-detail__name">@product.Name</span>
+                    </div>
+                    <div>
+                        <div class="pd-detail__inline">
+                            <span class="pd-detail__price">@product.Price ت</span>
+                        </div>
                     </div>
                     <div class="u-s-m-b-15">
 
@@ -207,21 +212,28 @@
                                                 }
                                             </div>
                                             <div class="u-s-m-b-30">
-                                                <form class="pd-tab__rev-f2" action="/product/@product.Id" method="POST">
-                                                    <input name="ProductId" type="hidden" value="@product.Id" />
-                                                    <h2 class="u-s-m-b-15">نظرتان را بگویید</h2>
-                                                    <span class="gl-text u-s-m-b-15">تنها نظر شما نمایش داده خواهد شد</span>
-                                                    <div class="rev-f2__group">
-                                                        <div class="u-s-m-b-15">
-                                                            <label class="gl-label" for="reviewer-text">نظر شما</label><textarea
-                                                                class="text-area text-area--primary-style" id="reviewer-text" asp-for="Text"></textarea>
+                                                @if (User.Identity.IsAuthenticated)
+                                                {
+                                                    <form class="pd-tab__rev-f2" action="/product/@product.Id" method="POST">
+                                                        <input name="ProductId" type="hidden" value="@product.Id" />
+                                                        <h2 class="u-s-m-b-15">نظرتان را بگویید</h2>
+                                                        <span class="gl-text u-s-m-b-15">تنها نظر شما نمایش داده خواهد شد</span>
+                                                        <div class="rev-f2__group">
+                                                            <div class="u-s-m-b-15">
+                                                                <label class="gl-label" for="reviewer-text">نظر شما</label><textarea class="text-area text-area--primary-style" id="reviewer-text" asp-for="Text"></textarea>
+                                                            </div>
+                                                            <span asp-validation-for="Text" class="error-text"></span>
                                                         </div>
-                                                        <span asp-validation-for="Text" class="error-text"></span>
-                                                    </div>
-                                                    <div>
-                                                        <button class="btn btn--e-brand-shadow" type="submit">ارسال</button>
-                                                    </div>
-                                                </form>
+                                                        <div>
+                                                            <button class="btn btn--e-brand-shadow" type="submit">ارسال</button>
+                                                        </div>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <div class="alert-error">برای ثبت نظر ابتدا باید وارد سایت شوید</div>
+                                                }
+
                                             </div>
                                         </div>
                                     </div>
